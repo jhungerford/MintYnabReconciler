@@ -6,38 +6,15 @@ import dev.budget.reconciler.transaction.YnabTransaction;
 import org.supercsv.cellprocessor.Optional;
 import org.supercsv.cellprocessor.constraint.NotNull;
 import org.supercsv.cellprocessor.ift.CellProcessor;
-import org.supercsv.io.CsvBeanReader;
-import org.supercsv.io.ICsvBeanReader;
-import org.supercsv.prefs.CsvPreference;
 
-import java.io.IOException;
-import java.io.Reader;
-import java.util.ArrayList;
-import java.util.List;
-
-public class YnabTransactionsReader implements TransactionsReader<YnabTransaction> {
+public class YnabTransactionsReader extends TransactionsReader<YnabTransaction> {
 	// "Account","Flag","Check Number","Date","Payee","Category","Master Category","Sub Category","Memo","Outflow","Inflow","Cleared","Running Balance"
 
-	public List<YnabTransaction> read(Reader reader) throws IOException {
-		try (ICsvBeanReader beanReader = new CsvBeanReader(reader, CsvPreference.STANDARD_PREFERENCE)) {
-			// Skip the header - we'll define our own
-			beanReader.getHeader(true);
-
-			String[] header = createHeader();
-			CellProcessor[] processors = createProcessors();
-
-			List<YnabTransaction> transactions = new ArrayList<>();
-
-			YnabTransaction transaction;
-			while ((transaction = beanReader.read(YnabTransaction.class, header, processors)) != null) {
-				transactions.add(transaction);
-			}
-
-			return transactions;
-		}
+	public Class<YnabTransaction> getTransactionClass() {
+		return YnabTransaction.class;
 	}
 
-	private String[] createHeader() {
+	public String[] getHeaders() {
 		return new String[] {
 				"account",			// Account
 				null,				// Flag
@@ -55,7 +32,7 @@ public class YnabTransactionsReader implements TransactionsReader<YnabTransactio
 		};
 	}
 
-	private CellProcessor[] createProcessors() {
+	public CellProcessor[] getCellProcessors() {
 		return new CellProcessor[] {
 				new NotNull(),						// Account
 				null,								// Flag
