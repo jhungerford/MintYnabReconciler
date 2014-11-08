@@ -2,7 +2,7 @@ package dev.budget.reconciler.transaction;
 
 import org.joda.time.LocalDate;
 
-public class YnabTransaction {
+public class YnabTransaction implements Transaction {
 
 	private String account;
 	private LocalDate date;

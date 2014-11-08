@@ -2,7 +2,7 @@ package dev.budget.reconciler.transaction;
 
 import org.joda.time.LocalDate;
 
-public class MintTransaction {
+public class MintTransaction implements Transaction {
 
 	private LocalDate date;
 	private String description;
