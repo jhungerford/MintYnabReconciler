@@ -5,4 +5,4 @@ target/
 mockup/
 
 # Exports are personal - don't version them.
-src/main/resources/*.csv
+src/main/resources/transactions/*.csv
