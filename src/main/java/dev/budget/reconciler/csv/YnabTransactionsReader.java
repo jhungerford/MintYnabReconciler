@@ -2,7 +2,7 @@ package dev.budget.reconciler.csv;
 
 import dev.budget.reconciler.csv.processors.ParseCents;
 import dev.budget.reconciler.csv.processors.ParseLocalDate;
-import dev.budget.reconciler.transaction.YnabTransaction;
+import dev.budget.reconciler.model.YnabTransaction;
 import org.supercsv.cellprocessor.Optional;
 import org.supercsv.cellprocessor.constraint.NotNull;
 import org.supercsv.cellprocessor.ift.CellProcessor;

@@ -1,4 +1,4 @@
-package dev.budget.reconciler.transaction;
+package dev.budget.reconciler.model;
 
 import org.joda.time.LocalDate;
 

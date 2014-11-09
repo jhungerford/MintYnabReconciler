@@ -2,7 +2,7 @@ package dev.budget.reconciler.csv;
 
 import com.google.common.collect.ComparisonChain;
 import dev.budget.reconciler.csv.handler.ListTransactionHandler;
-import dev.budget.reconciler.transaction.MintTransaction;
+import dev.budget.reconciler.model.MintTransaction;
 import org.joda.time.LocalDate;
 import org.testng.annotations.Test;
 

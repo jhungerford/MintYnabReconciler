@@ -5,9 +5,9 @@ import dev.budget.reconciler.csv.MintTransactionsReader;
 import dev.budget.reconciler.csv.TransactionsReader;
 import dev.budget.reconciler.csv.YnabTransactionsReader;
 import dev.budget.reconciler.csv.handler.ListTransactionHandler;
-import dev.budget.reconciler.transaction.MintTransaction;
-import dev.budget.reconciler.transaction.Transaction;
-import dev.budget.reconciler.transaction.YnabTransaction;
+import dev.budget.reconciler.model.MintTransaction;
+import dev.budget.reconciler.model.Transaction;
+import dev.budget.reconciler.model.YnabTransaction;
 
 import java.io.*;
 import java.net.URISyntaxException;

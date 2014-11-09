@@ -1,6 +1,6 @@
 package dev.budget.reconciler.csv.handler;
 
-import dev.budget.reconciler.transaction.Transaction;
+import dev.budget.reconciler.model.Transaction;
 
 import java.util.ArrayList;
 import java.util.List;

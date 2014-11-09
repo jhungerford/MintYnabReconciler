@@ -1,7 +1,7 @@
 package dev.budget.reconciler.csv;
 
 import dev.budget.reconciler.csv.handler.TransactionHandler;
-import dev.budget.reconciler.transaction.Transaction;
+import dev.budget.reconciler.model.Transaction;
 import org.supercsv.cellprocessor.ift.CellProcessor;
 import org.supercsv.io.CsvBeanReader;
 import org.supercsv.io.ICsvBeanReader;
