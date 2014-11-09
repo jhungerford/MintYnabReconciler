@@ -3,8 +3,8 @@ package dev.budget.reconciler;
 import com.google.common.io.Resources;
 import dev.budget.reconciler.csv.MintTransactionsReader;
 import dev.budget.reconciler.csv.TransactionsReader;
+import dev.budget.reconciler.csv.YnabTransactionsReader;
 import dev.budget.reconciler.csv.handler.ESTransactionHandler;
-import dev.budget.reconciler.csv.handler.ListTransactionHandler;
 import dev.budget.reconciler.es.ESIndex;
 import dev.budget.reconciler.es.ElasticSearchAdmin;
 import dev.budget.reconciler.es.EmbeddedElasticSearch;
@@ -17,48 +17,57 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
 import java.io.Reader;
-import java.net.URISyntaxException;
 import java.net.URL;
-import java.util.List;
 
 import static org.slf4j.LoggerFactory.getLogger;
 
 public class ReconcilerMain {
 	private static final Logger log = getLogger(ReconcilerMain.class);
 
+	private final EmbeddedElasticSearch es;
+	private final Client client;
+	private final ElasticSearchAdmin esAdmin;
+
+	public ReconcilerMain(EmbeddedElasticSearch es) {
+		this.es = es;
+		this.client = es.client();
+		this.esAdmin = new ElasticSearchAdmin(es.client());
+	}
+
+	public void recreateIndexes() throws IOException {
+		for (ESIndex index : new ESIndex[] { ESIndex.MINT, ESIndex.YNAB }) {
+			esAdmin.deleteIndex(index);
+			esAdmin.createIndexIfNotExists(index);
+		}
+	}
+
+	private <T extends Transaction> void streamTransactionsToES(String transactionsFile, ESIndex index, TransactionsReader<T> reader) throws Exception {
+		ESTransactionHandler<T> handler = new ESTransactionHandler<>(index, client);
+
+		URL fileUrl = Resources.getResource(transactionsFile);
+		try (Reader fileReader = new FileReader(new File(fileUrl.toURI()))) {
+			reader.read(fileReader, handler);
+		}
+	}
+
+	private long countTransactions(ESIndex index) {
+		return client.prepareCount(index.name).execute().actionGet().getCount();
+	}
+
 	public static void main(String[] args) throws Exception {
 		try (EmbeddedElasticSearch es = new EmbeddedElasticSearch()) {
 			es.start();
 
-			Client client = es.client();
-			ElasticSearchAdmin esAdmin = new ElasticSearchAdmin(client);
+			ReconcilerMain reconciler = new ReconcilerMain(es);
 
-			esAdmin.deleteIndex(ESIndex.MINT);
-			esAdmin.createIndexIfNotExists(ESIndex.MINT);
+			reconciler.recreateIndexes();
+			reconciler.streamTransactionsToES("transactions/mint.csv", ESIndex.MINT, new MintTransactionsReader());
+			reconciler.streamTransactionsToES("transactions/ynab.csv", ESIndex.YNAB, new YnabTransactionsReader());
 
-			ESTransactionHandler<MintTransaction> mintESHandler = new ESTransactionHandler<>(ESIndex.MINT, client);
+			// TODO: wait until entries are indexed.
 
-			URL fileUrl = Resources.getResource("transactions/mint.csv");
-			try (Reader fileReader = new FileReader(new File(fileUrl.toURI()))) {
-				new MintTransactionsReader().read(fileReader, mintESHandler);
-			}
-
-			long numMint = client.prepareCount(ESIndex.MINT.name).execute().actionGet().getCount();
-			log.info("# entries in ES: {}", numMint);
+			log.info("# mint ES entries: {}", reconciler.countTransactions(ESIndex.MINT));
+			log.info("# ynab ES entries: {}", reconciler.countTransactions(ESIndex.YNAB));
 		}
-	}
-
-	private static <T extends Transaction> List<T> readTransactions(String directory, String filename, TransactionsReader<T> transactionsReader) throws IOException, URISyntaxException {
-		ListTransactionHandler<T> handler = new ListTransactionHandler<>();
-
-		String resourceName = directory + File.separator + filename;
-		log.debug("Loading transactions from {}", resourceName);
-
-		URL fileUrl = Resources.getResource(resourceName);
-		try (Reader fileReader = new FileReader(new File(fileUrl.toURI()))) {
-			transactionsReader.read(fileReader, handler);
-		}
-
-		return handler.getTransactions();
 	}
 }

@@ -1,7 +1,8 @@
 package dev.budget.reconciler.es;
 
 public enum ESIndex {
-	MINT("mint", "transaction", "es/mint_index.json");
+	MINT("mint", "transaction", "es/mint_index.json"),
+	YNAB("ynab", "transaction", "es/ynab_index.json");
 
 	public final String name;
 	public final String type;

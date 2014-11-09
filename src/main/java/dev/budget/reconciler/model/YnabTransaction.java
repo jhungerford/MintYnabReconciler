@@ -1,6 +1,7 @@
 package dev.budget.reconciler.model;
 
 import org.elasticsearch.common.xcontent.XContentBuilder;
+import org.elasticsearch.common.xcontent.XContentFactory;
 import org.joda.time.LocalDate;
 
 import java.io.IOException;
@@ -84,7 +85,15 @@ public class YnabTransaction implements Transaction {
 	}
 
 	public XContentBuilder esJson() throws IOException {
-		throw new IllegalStateException("Not Implemented"); // TODO: implement
+		return XContentFactory.jsonBuilder()
+				.startObject()
+				.field("account", account)
+				.field("date", date)
+				.field("payee", payee)
+				.field("masterCategory", masterCategory)
+				.field("subCategory", subCategory)
+				.field("outflowCents", outflowCents)
+				.field("inflowCents", inflowCents);
 	}
 
 	public String toString() {

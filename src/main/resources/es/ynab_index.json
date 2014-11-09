@@ -1,0 +1,15 @@
+{
+  "mappings": {
+    "transaction": {
+      "properties": {
+        "account": {"type": "string"},
+        "date": {"type": "date"},
+        "payee": {"type": "string"},
+        "masterCategory": {"type": "string"},
+        "subCategory": {"type": "string"},
+        "outflowCents": {"type": "integer"},
+        "inflowCents": {"type": "integer"}
+      }
+    }
+  }
+}
