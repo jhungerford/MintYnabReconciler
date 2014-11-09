@@ -3,6 +3,7 @@ package dev.budget.reconciler.es;
 import com.google.common.io.Resources;
 import org.elasticsearch.action.admin.cluster.health.ClusterHealthStatus;
 import org.elasticsearch.action.admin.cluster.stats.ClusterStatsResponse;
+import org.elasticsearch.action.admin.indices.delete.DeleteIndexRequestBuilder;
 import org.elasticsearch.client.Client;
 import org.slf4j.Logger;
 
@@ -39,5 +40,12 @@ public class ElasticSearchAdmin {
 	public ClusterHealthStatus clusterHealthStatus() {
 		ClusterStatsResponse clusterStatsResponse = client.admin().cluster().prepareClusterStats().execute().actionGet();
 		return clusterStatsResponse.getStatus();
+	}
+
+	public void deleteIndex(ESIndex index) throws IOException {
+		if (indexExists(index.name)) {
+			log.info("Deleting ES index '{}'", index.name);
+			client.admin().indices().prepareDelete(index.name).execute().actionGet();
+		}
 	}
 }

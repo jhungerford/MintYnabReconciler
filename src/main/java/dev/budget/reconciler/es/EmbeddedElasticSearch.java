@@ -40,7 +40,7 @@ public class EmbeddedElasticSearch implements Closeable {
 		stop();
 	}
 
-	public synchronized Client getClient() {
+	public synchronized Client client() {
 		if (node == null) {
 			throw new IllegalStateException("ElasticSearch isn't running");
 		}

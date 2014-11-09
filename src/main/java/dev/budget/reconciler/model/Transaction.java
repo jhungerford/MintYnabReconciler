@@ -1,4 +1,9 @@
 package dev.budget.reconciler.model;
 
-/** Marker interface for transactions */
-public interface Transaction {}
+import org.elasticsearch.common.xcontent.XContentBuilder;
+
+import java.io.IOException;
+
+public interface Transaction {
+	XContentBuilder esJson() throws IOException;
+}

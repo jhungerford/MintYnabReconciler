@@ -1,6 +1,9 @@
 package dev.budget.reconciler.model;
 
+import org.elasticsearch.common.xcontent.XContentBuilder;
 import org.joda.time.LocalDate;
+
+import java.io.IOException;
 
 public class YnabTransaction implements Transaction {
 
@@ -78,6 +81,10 @@ public class YnabTransaction implements Transaction {
 
 	public void setInflowCents(long inflowCents) {
 		this.inflowCents = inflowCents;
+	}
+
+	public XContentBuilder esJson() throws IOException {
+		throw new IllegalStateException("Not Implemented"); // TODO: implement
 	}
 
 	public String toString() {

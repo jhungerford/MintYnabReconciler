@@ -1,6 +1,10 @@
 package dev.budget.reconciler.model;
 
+import org.elasticsearch.common.xcontent.XContentBuilder;
+import org.elasticsearch.common.xcontent.XContentFactory;
 import org.joda.time.LocalDate;
+
+import java.io.IOException;
 
 public class MintTransaction implements Transaction {
 
@@ -78,6 +82,18 @@ public class MintTransaction implements Transaction {
 
 	public void setAccount(String account) {
 		this.account = account;
+	}
+
+	public XContentBuilder esJson() throws IOException {
+		return XContentFactory.jsonBuilder()
+				.startObject()
+				.field("date", date)
+				.field("description", description)
+				.field("originalDescription", originalDescription)
+				.field("amountCents", amountCents)
+				.field("type", type)
+				.field("category", category)
+				.field("account", account);
 	}
 
 	public String toString() {
