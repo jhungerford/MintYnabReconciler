@@ -30,7 +30,7 @@ public class ParseCents extends CellProcessorAdaptor {
 		}
 
 		try {
-			return Integer.parseInt(matcher.group(1)) * 100 + Integer.parseInt(matcher.group(2));
+			return Long.parseLong(matcher.group(1)) * 100 + Long.parseLong(matcher.group(2));
 		} catch (NumberFormatException e) {
 			throw new SuperCsvCellProcessorException("Dollar or cent amount in '" + value + "' is non-numeric", context, this, e);
 		}

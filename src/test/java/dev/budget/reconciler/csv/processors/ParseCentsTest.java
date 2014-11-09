@@ -5,6 +5,7 @@ import org.supercsv.util.CsvContext;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
+import static org.fest.assertions.api.Assertions.assertThat;
 import static org.mockito.Mockito.mock;
 
 @Test
@@ -28,7 +29,15 @@ public class ParseCentsTest {
 
 	@Test(dataProvider = "testCases")
 	public void testCents(String value, Long expectedCents) {
+		CsvContext context = mock(CsvContext.class);
+		Object result = parseCents.execute(value, context);
 
+		assertThat(result).isNotNull();
+		assertThat(result).isInstanceOf(Long.class);
+
+		long cents = (Long) result;
+
+		assertThat(cents).isEqualTo(expectedCents);
 	}
 
 	@Test(expectedExceptions = SuperCsvCellProcessorException.class)
