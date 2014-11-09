@@ -9,8 +9,8 @@ public class YnabTransaction implements Transaction {
 	private String payee;
 	private String masterCategory;
 	private String subCategory;
-	private int outflowCents;
-	private int inflowCents;
+	private long outflowCents;
+	private long inflowCents;
 
 	public YnabTransaction() {}
 
@@ -64,19 +64,19 @@ public class YnabTransaction implements Transaction {
 		this.subCategory = subCategory;
 	}
 
-	public int getOutflowCents() {
+	public long getOutflowCents() {
 		return outflowCents;
 	}
 
-	public void setOutflowCents(int outflowCents) {
+	public void setOutflowCents(long outflowCents) {
 		this.outflowCents = outflowCents;
 	}
 
-	public int getInflowCents() {
+	public long getInflowCents() {
 		return inflowCents;
 	}
 
-	public void setInflowCents(int inflowCents) {
+	public void setInflowCents(long inflowCents) {
 		this.inflowCents = inflowCents;
 	}
 

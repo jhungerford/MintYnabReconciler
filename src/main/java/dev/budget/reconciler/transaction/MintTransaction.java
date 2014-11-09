@@ -7,7 +7,7 @@ public class MintTransaction implements Transaction {
 	private LocalDate date;
 	private String description;
 	private String originalDescription;
-	private int amountCents;
+	private long amountCents;
 	private String type;
 	private String category;
 	private String account;
@@ -48,11 +48,11 @@ public class MintTransaction implements Transaction {
 		this.originalDescription = originalDescription;
 	}
 
-	public int getAmountCents() {
+	public long getAmountCents() {
 		return amountCents;
 	}
 
-	public void setAmountCents(int amountCents) {
+	public void setAmountCents(long amountCents) {
 		this.amountCents = amountCents;
 	}
 
