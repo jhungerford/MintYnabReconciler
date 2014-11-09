@@ -1,13 +1,15 @@
 {
-  "event": {
-    "properties": {
-      "date": {"type": "date"},
-      "description": {"type": "string"},
-      "originalDescription": {"type": "string"},
-      "amountCents": {"type": "integer"},
-      "type": {"type": "string"},
-      "category": {"type": "string"},
-      "account": {"type": "string"}
+  "mappings": {
+    "transaction": {
+      "properties": {
+        "date": {"type": "date"},
+        "description": {"type": "string"},
+        "originalDescription": {"type": "string"},
+        "amountCents": {"type": "integer"},
+        "type": {"type": "string"},
+        "category": {"type": "string"},
+        "account": {"type": "string"}
+      }
     }
   }
 }
