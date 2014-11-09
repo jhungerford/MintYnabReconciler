@@ -12,6 +12,18 @@ public class MintTransaction implements Transaction {
 	private String category;
 	private String account;
 
+	public MintTransaction() {}
+
+	public MintTransaction(LocalDate date, String description, String originalDescription, int amountCents, String type, String category, String account) {
+		this.date = date;
+		this.description = description;
+		this.originalDescription = originalDescription;
+		this.amountCents = amountCents;
+		this.type = type;
+		this.category = category;
+		this.account = account;
+	}
+
 	public LocalDate getDate() {
 		return date;
 	}

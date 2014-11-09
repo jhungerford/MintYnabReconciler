@@ -12,6 +12,18 @@ public class YnabTransaction implements Transaction {
 	private int outflowCents;
 	private int inflowCents;
 
+	public YnabTransaction() {}
+
+	public YnabTransaction(String account, LocalDate date, String payee, String masterCategory, String subCategory, int outflowCents, int inflowCents) {
+		this.account = account;
+		this.date = date;
+		this.payee = payee;
+		this.masterCategory = masterCategory;
+		this.subCategory = subCategory;
+		this.outflowCents = outflowCents;
+		this.inflowCents = inflowCents;
+	}
+
 	public String getAccount() {
 		return account;
 	}
