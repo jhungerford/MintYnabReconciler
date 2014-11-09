@@ -5,6 +5,9 @@ import dev.budget.reconciler.csv.MintTransactionsReader;
 import dev.budget.reconciler.csv.TransactionsReader;
 import dev.budget.reconciler.csv.YnabTransactionsReader;
 import dev.budget.reconciler.csv.handler.ListTransactionHandler;
+import dev.budget.reconciler.es.ESIndex;
+import dev.budget.reconciler.es.ElasticSearchAdmin;
+import dev.budget.reconciler.es.EmbeddedElasticSearch;
 import dev.budget.reconciler.model.MintTransaction;
 import dev.budget.reconciler.model.Transaction;
 import dev.budget.reconciler.model.YnabTransaction;
@@ -21,6 +24,15 @@ public class ReconcilerMain {
 	private static final Logger log = getLogger(ReconcilerMain.class);
 
 	public static void main(String[] args) throws Exception {
+		try (EmbeddedElasticSearch es = new EmbeddedElasticSearch()) {
+			es.start();
+
+			ElasticSearchAdmin esAdmin = new ElasticSearchAdmin(es.getClient());
+
+			esAdmin.createIndexIfNotExists(ESIndex.MINT);
+		}
+
+
 		String transactionsDir = "transactions";
 
 		List<YnabTransaction> ynabTransactions = readTransactions(transactionsDir, "ynab.csv", new YnabTransactionsReader());

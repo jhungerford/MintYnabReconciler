@@ -3,6 +3,7 @@
 build/
 target/
 mockup/
+data/
 
 # Exports are personal - don't version them.
 src/main/resources/transactions/*.csv
