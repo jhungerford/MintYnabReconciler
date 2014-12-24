@@ -8,8 +8,8 @@ import java.net.URL;
 public class IdColumnAdder {
 
 	public static void main(String[] args) throws Exception {
-		String inFile = "transactions/ynab.csv";
-		String outFile = "ynab_ids.csv";
+		String inFile = "transactions/mint.csv";
+		String outFile = "mint_ids.csv";
 
 		URL fileUrl = Resources.getResource(inFile);
 		try (BufferedReader reader = new BufferedReader(new FileReader(new File(fileUrl.toURI())));
@@ -18,7 +18,7 @@ public class IdColumnAdder {
 			String headers = reader.readLine();
 			out.println("\"ID\"," + headers);
 
-			int id = 1;
+			int id = 2;
 			for (String line = reader.readLine(); line != null; line = reader.readLine()) {
 				out.println(id + "," + line);
 				id ++;
