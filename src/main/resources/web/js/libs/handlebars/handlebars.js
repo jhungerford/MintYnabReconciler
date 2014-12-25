@@ -26,13 +26,14 @@ THE SOFTWARE.
 */
 /* exported Handlebars */
 (function (root, factory) {
-  if (typeof define === 'function' && define.amd) {
-    define([], factory);
-  } else if (typeof exports === 'object') {
-    module.exports = factory();
-  } else {
+  // TODO: ember 1.9.1 expects a window.Handlebars object - I can't figure out how to give it a non-global Handlebars
+  //if (typeof define === 'function' && define.amd) {
+  //  define([], factory);
+  //} else if (typeof exports === 'object') {
+  //  module.exports = factory();
+  //} else {
     root.Handlebars = root.Handlebars || factory();
-  }
+  //}
 }(this, function () {
 // handlebars/safe-string.js
 var __module4__ = (function() {
