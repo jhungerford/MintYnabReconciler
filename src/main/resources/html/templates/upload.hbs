@@ -1,26 +1,8 @@
 <div class="row full">
 	<div class="small-6 columns">
-		<div class="row">
-			<div class="small-9 columns">
-				<h1>Mint CSV</h1>
-			</div>
-			<div class="small-3 columns text-right">
-				<a class="button" {{action 'uploadMint'}}>Upload</a>
-			</div>
-		</div>
-
-		{{textarea name="mintcsv" class="csv-textarea" value=mintcsv spellcheck="false"}}
+		{{upload-csv header="Mint CSV" upload="uploadMint"}}
 	</div>
 	<div class="small-6 columns">
-		<div class="row">
-			<div class="small-9 columns">
-				<h1>YNAB CSV</h1>
-			</div>
-			<div class="small-3 columns text-right">
-				<a class="button">Upload</a>
-			</div>
-		</div>
-
-		<textarea class="csv-textarea" name="ynabcsv" spellcheck="false"></textarea>
+		{{upload-csv header="Ynab CSV" upload="uploadYnab"}}
 	</div>
 </div>

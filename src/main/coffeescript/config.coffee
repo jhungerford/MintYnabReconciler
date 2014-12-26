@@ -1,5 +1,5 @@
 require.config
-	deps: ['app', 'routes']
+	deps: ['app', 'routes', 'components/upload-csv']
 
 	baseUrl: 'web/js'
 
