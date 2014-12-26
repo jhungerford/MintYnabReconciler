@@ -5,11 +5,11 @@
 				<h1>Mint CSV</h1>
 			</div>
 			<div class="small-3 columns text-right">
-				<a class="button">Upload</a>
+				<a class="button" {{action 'uploadMint'}}>Upload</a>
 			</div>
 		</div>
 
-		<textarea class="csv-textarea" name="mintcsv" spellcheck="false"></textarea>
+		{{textarea name="mintcsv" class="csv-textarea" value=mintcsv spellcheck="false"}}
 	</div>
 	<div class="small-6 columns">
 		<div class="row">

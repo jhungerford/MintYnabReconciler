@@ -4,6 +4,7 @@ import com.google.inject.Guice;
 import com.google.inject.Injector;
 import com.google.inject.Module;
 import dev.budget.reconciler.api.HelloResource;
+import dev.budget.reconciler.api.TransactionsResource;
 import dev.budget.reconciler.config.ReconcilerConfiguration;
 import dev.budget.reconciler.guice.ConfigurationModule;
 import io.dropwizard.Application;
@@ -20,6 +21,16 @@ import static org.slf4j.LoggerFactory.getLogger;
 
 public class ReconcilerApplication extends Application<ReconcilerConfiguration> {
 	private static final Logger log = getLogger(ReconcilerApplication.class);
+
+	/**
+	 * List of API classes.
+	 *
+	 * ADD NEW API RESOURCE CLASSES HERE
+	 */
+	private static final Class<?>[] RESOURCE_CLASSES = {
+			HelloResource.class,
+			TransactionsResource.class
+	};
 
 	private final Module[] modules;
 
@@ -39,7 +50,10 @@ public class ReconcilerApplication extends Application<ReconcilerConfiguration> 
 		Injector injector = Guice.createInjector(allModules);
 
 		environment.jersey().setUrlPattern("/api/*");
-		environment.jersey().register(injector.getInstance(HelloResource.class));
+
+		for (Class<?> resourceClass : RESOURCE_CLASSES) {
+			environment.jersey().register(injector.getInstance(resourceClass));
+		}
 	}
 
 	public static void main(String[] args) {
