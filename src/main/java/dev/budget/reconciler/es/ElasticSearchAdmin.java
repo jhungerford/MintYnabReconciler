@@ -1,6 +1,7 @@
 package dev.budget.reconciler.es;
 
 import com.google.common.io.Resources;
+import com.google.inject.Inject;
 import org.elasticsearch.action.admin.cluster.health.ClusterHealthStatus;
 import org.elasticsearch.action.admin.cluster.stats.ClusterStatsResponse;
 import org.elasticsearch.client.Client;
@@ -14,11 +15,8 @@ import static org.slf4j.LoggerFactory.getLogger;
 public class ElasticSearchAdmin {
 	private static final Logger log = getLogger(ElasticSearchAdmin.class);
 
-	private final Client client;
-
-	public ElasticSearchAdmin(Client client) {
-		this.client = client;
-	}
+	@Inject
+	private Client client;
 
 	public void createIndexIfNotExists(ESIndex index) throws IOException {
 		if (! indexExists(index.name)) {

@@ -40,7 +40,7 @@ public class ReconcilerMain {
 	public ReconcilerMain(EmbeddedElasticSearch es) {
 		this.es = es;
 		this.client = es.client();
-		this.esAdmin = new ElasticSearchAdmin(es.client());
+		this.esAdmin = new ElasticSearchAdmin();
 	}
 
 	public void recreateIndexes(ESIndex... indexes) throws IOException {

@@ -6,7 +6,10 @@ import com.google.inject.Module;
 import dev.budget.reconciler.api.HelloResource;
 import dev.budget.reconciler.api.TransactionsResource;
 import dev.budget.reconciler.config.ReconcilerConfiguration;
+import dev.budget.reconciler.es.ManagedElasticSearch;
 import dev.budget.reconciler.guice.ConfigurationModule;
+import dev.budget.reconciler.guice.ElasticSearchModule;
+import dev.budget.reconciler.health.ElasticSearchHealth;
 import io.dropwizard.Application;
 import io.dropwizard.assets.AssetsBundle;
 import io.dropwizard.setup.Bootstrap;
@@ -50,17 +53,17 @@ public class ReconcilerApplication extends Application<ReconcilerConfiguration> 
 		Injector injector = Guice.createInjector(allModules);
 
 		environment.jersey().setUrlPattern("/api/*");
+		environment.lifecycle().manage(injector.getInstance(ManagedElasticSearch.class));
+		environment.healthChecks().register("ElasticSearch", injector.getInstance(ElasticSearchHealth.class));
 
 		for (Class<?> resourceClass : RESOURCE_CLASSES) {
 			environment.jersey().register(injector.getInstance(resourceClass));
 		}
 	}
 
-	public static void main(String[] args) {
-		try {
-			new ReconcilerApplication().run(args);
-		} catch (Throwable t) {
-			log.error("Fatal exception in ReconcilerApplication", t);
-		}
+	public static void main(String[] args) throws Exception {
+		new ReconcilerApplication(
+				new ElasticSearchModule()
+		).run(args);
 	}
 }
