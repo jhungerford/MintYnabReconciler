@@ -8,6 +8,13 @@ define (require) ->
 		mintUrl: 'api/v1/transactions/mint'
 		ynabUrl: 'api/v1/transactions/ynab'
 
+		mintUploaded: false
+		ynabUploaded: false
+
+		diffWhenBothUploaded: (->
+			@transitionToRoute('diff') if @get('mintUploaded') and @get('ynabUploaded')
+		).observes('mintUploaded', 'ynabUploaded')
+
 		actions:
-			uploadedMint: -> console.log("Uploaded mint"); false
-			uploadedYnab: -> console.log("Uploaded ynab"); false
+			uploadedMint: -> @set('mintUploaded', true)
+			uploadedYnab: -> @set('ynabUploaded', true)
