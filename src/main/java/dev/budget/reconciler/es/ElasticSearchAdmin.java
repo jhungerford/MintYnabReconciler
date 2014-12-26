@@ -4,7 +4,10 @@ import com.google.common.io.Resources;
 import com.google.inject.Inject;
 import org.elasticsearch.action.admin.cluster.health.ClusterHealthStatus;
 import org.elasticsearch.action.admin.cluster.stats.ClusterStatsResponse;
+import org.elasticsearch.action.deletebyquery.DeleteByQueryResponse;
+import org.elasticsearch.action.deletebyquery.IndexDeleteByQueryResponse;
 import org.elasticsearch.client.Client;
+import org.elasticsearch.index.query.QueryBuilders;
 import org.slf4j.Logger;
 
 import java.io.IOException;
@@ -37,6 +40,12 @@ public class ElasticSearchAdmin {
 	public ClusterHealthStatus clusterHealthStatus() {
 		ClusterStatsResponse clusterStatsResponse = client.admin().cluster().prepareClusterStats().execute().actionGet();
 		return clusterStatsResponse.getStatus();
+	}
+
+	public void clearIndex(ESIndex index) throws IOException {
+		client.prepareDeleteByQuery(index.name)
+				.setQuery(QueryBuilders.matchAllQuery())
+				.execute().actionGet();
 	}
 
 	public void deleteIndex(ESIndex index) throws IOException {
