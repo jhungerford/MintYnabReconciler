@@ -9,7 +9,7 @@ import javax.ws.rs.core.Response;
 @Path("/v1/transactions")
 public class TransactionsResource {
 
-	@POST
+	@PUT
 	@Path("/mint")
 	@Consumes("text/csv")
 	@Produces(MediaType.APPLICATION_JSON)
@@ -17,7 +17,7 @@ public class TransactionsResource {
 		return Response.ok(new UploadResponse(0)).build();
 	}
 
-	@POST
+	@PUT
 	@Path("/ynab")
 	@Consumes("text/csv")
 	@Produces(MediaType.APPLICATION_JSON)

@@ -7,7 +7,7 @@ define (require) ->
 
 	uploadTo = (url, csv) ->
 		$.ajax(url,
-			type: 'POST'
+			type: 'PUT'
 			contentType: 'text/csv; charset=UTF-8'
 			data: csv
 			dataType: 'json')
