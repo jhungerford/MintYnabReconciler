@@ -5,8 +5,9 @@ define (require) ->
 	App.registerTemplate 'components/upload-csv', require('text!/templates/components/upload-csv.hbs')
 
 	App.UploadCsvComponent = Ember.Component.extend
-		header: Ember.computed.defaultTo 'CSV'
+		header: 'CSV'
 		csv: ''
+		uploadDisabled: ( -> @get('csv').length is 0).property('csv')
 
 		actions:
 			upload: -> @sendAction 'upload', @get('csv')

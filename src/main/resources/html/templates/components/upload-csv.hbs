@@ -3,7 +3,7 @@
 		<h1>{{header}}</h1>
 	</div>
 	<div class="small-3 columns text-right">
-		<a class="button" {{action 'upload'}}>Upload</a>
+		<a {{action 'upload'}} {{bind-attr class=":button uploadDisabled:disabled"}}>Upload</a>
 	</div>
 </div>
 
