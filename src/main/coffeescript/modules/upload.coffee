@@ -1,13 +1,13 @@
-define ['app', 'ember', 'jQuery', 'text!/templates/upload.hbs'], (App, Ember, $, uploadTemplate) ->
-	App.registerTemplate 'upload', uploadTemplate
+define (require) ->
+	App = require('app')
+	Ember = require('ember')
+
+	App.registerTemplate 'upload', require('text!/templates/upload.hbs')
 
 	App.UploadController = Ember.Controller.extend
+		mintUrl: 'api/v1/transactions/mint'
+		ynabUrl: 'api/v1/transactions/ynab'
+
 		actions:
-			uploadMint: (csv) -> console.log("Upload mint")
-			uploadYnab: (csv) -> console.log("Upload ynab")
-#				$.ajax('/api/v1/transactions/mint',
-#					type: 'POST'
-#					contentType: 'text/csv; charset=UTF-8'
-#					data: @get('mintcsv')
-#					dataType: 'json'
-#				).done (response) => console.log("Uploaded")
+			uploadedMint: -> console.log("Uploaded mint"); false
+			uploadedYnab: -> console.log("Uploaded ynab"); false

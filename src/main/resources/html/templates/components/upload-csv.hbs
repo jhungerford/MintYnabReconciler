@@ -2,9 +2,30 @@
 	<div class="small-9 columns">
 		<h1>{{header}}</h1>
 	</div>
-	<div class="small-3 columns text-right">
-		<a {{action 'upload'}} {{bind-attr class=":button uploadDisabled:disabled"}}>Upload</a>
-	</div>
+	{{#if isInput}}
+		<div class="small-3 columns text-right">
+			<a {{action 'upload'}} {{bind-attr class=":button uploadDisabled:disabled"}}>Upload</a>
+		</div>
+	{{/if}}
 </div>
 
-{{textarea class="csv-textarea" value=csv spellcheck="false"}}
+{{#if hasError}}
+	<div class="alert-box alert">
+		{{errorMessage}}
+	</div>
+{{/if}}
+
+{{#if isInput}}
+	{{textarea class="csv-textarea" value=csv spellcheck="false"}}
+{{/if}}
+
+{{#if isUploading}}
+	<p>Uploading...</p>
+{{/if}}
+
+{{#if isUploaded}}
+	<div class="alert-box success">
+		Uploaded {{numRecords}} Records
+	</div>
+{{/if}}
+
