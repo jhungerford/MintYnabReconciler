@@ -18,6 +18,16 @@ body {
 	max-width: 100%;
 }
 
+.diff-correct {
+	font-weight: bold;
+	color: #43AC6A;
+}
+
+.diff-wrong {
+	font-weight: bold;
+	color: #f04124;
+}
+
 .footer {
 	text-align: center;
 }
