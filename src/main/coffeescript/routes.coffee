@@ -6,5 +6,8 @@ define (require) ->
 
 	App.Router.map( ->
 		@resource 'upload'
-		@resource 'diff'
+		@resource 'diff', ->
+			@route 'view'
+			@route 'loading'
+			@route 'error'
 	)
