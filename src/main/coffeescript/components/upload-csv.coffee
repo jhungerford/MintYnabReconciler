@@ -12,6 +12,12 @@ define (require) ->
 			data: csv
 			dataType: 'json')
 
+	getErrorReason = (xhr) ->
+		if xhr? and xhr.responseJSON? and xhr.responseJSON.reason?
+			xhr.responseJSON.reason
+		else
+			"No response from server"
+
 	App.UploadCsvComponent = Ember.Component.extend
 		isInput: true
 		isUploading: false
@@ -46,7 +52,7 @@ define (require) ->
 						@sendAction "uploaded"
 					.fail (xhr) =>
 						@setProperties
-							errorMessage: xhr.responseJSON.reason
+							errorMessage: getErrorReason(xhr)
 							hasError: true
 							isUploading: false
 							isInput: true
