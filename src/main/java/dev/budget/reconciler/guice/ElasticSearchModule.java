@@ -24,6 +24,7 @@ public class ElasticSearchModule extends AbstractModule {
 	}
 
 	@Provides
+	@Singleton
 	private Client createClient(Node node) {
 		return node.client();
 	}

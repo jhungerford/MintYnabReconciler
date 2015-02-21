@@ -38,7 +38,7 @@ public class YnabTransactionsReader extends TransactionsReader<YnabTransaction> 
 				null,								// Flag
 				null,								// Check Number
 				new ParseLocalDate(new NotNull()),	// Date
-				new NotNull(),						// Payee
+				new Optional(),						// Payee
 				null,								// Category
 				new Optional(),						// Master Category
 				new Optional(),						// Sub Category
