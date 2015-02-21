@@ -94,24 +94,6 @@
 					<target>1.8</target>
 				</configuration>
 			</plugin>
-
-			<plugin>
-				<groupId>com.voltvoodoo</groupId>
-				<artifactId>brew</artifactId>
-				<version>0.2.10</version>
-				<executions>
-					<execution>
-						<goals>
-							<goal>compile</goal>
-						</goals>
-					</execution>
-				</executions>
-				<configuration>
-					<coffeeSourceDir>${basedir}/src/main/coffeescript</coffeeSourceDir>
-					<coffeeOutputDir>${basedir}/target/classes/web/js</coffeeOutputDir>
-					<watch>true</watch>
-				</configuration>
-			</plugin>
 		</plugins>
 	</build>
 </project>

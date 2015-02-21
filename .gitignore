@@ -7,3 +7,11 @@ data/
 
 # Exports are personal - don't version them.
 src/main/resources/transactions/*.csv
+
+# Bower dependencies
+# Discussion here: http://addyosmani.com/blog/checking-in-front-end-dependencies/
+# Run 'bower init' to pull them down.
+src/main/resources/web/bower_components/
+
+# Grunt dependencies
+node_modules/
