@@ -3,6 +3,8 @@ package dev.budget.reconciler;
 import com.google.inject.Guice;
 import com.google.inject.Injector;
 import com.google.inject.Module;
+import com.twitter.finagle.builder.ServerBuilder;
+import com.twitter.finagle.http.Http;
 import dev.budget.reconciler.api.HelloResource;
 import dev.budget.reconciler.api.TransactionsResource;
 import dev.budget.reconciler.config.ReconcilerConfiguration;
@@ -10,12 +12,14 @@ import dev.budget.reconciler.es.ManagedElasticSearch;
 import dev.budget.reconciler.guice.ConfigurationModule;
 import dev.budget.reconciler.guice.ElasticSearchModule;
 import dev.budget.reconciler.health.ElasticSearchHealth;
+import dev.budget.reconciler.service.HelloService;
 import io.dropwizard.Application;
 import io.dropwizard.assets.AssetsBundle;
 import io.dropwizard.setup.Bootstrap;
 import io.dropwizard.setup.Environment;
 import org.slf4j.Logger;
 
+import java.net.InetSocketAddress;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -62,6 +66,13 @@ public class ReconcilerApplication extends Application<ReconcilerConfiguration> 
 	}
 
 	public static void main(String[] args) throws Exception {
+		ServerBuilder.safeBuild(new HelloService(),
+				ServerBuilder.get()
+						.name("hello")
+						.codec(Http.get())
+						.bindTo(new InetSocketAddress(8082))
+		);
+
 		new ReconcilerApplication(
 				new ElasticSearchModule()
 		).run(args);

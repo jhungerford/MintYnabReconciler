@@ -10,7 +10,8 @@
 
 	<properties>
 		<dropwizard-version>0.7.1</dropwizard-version>
-		<elasticsearch-version>1.4.1</elasticsearch-version>
+		<elasticsearch-version>1.4.4</elasticsearch-version>
+		<finagle-version>6.24.0</finagle-version>
 	</properties>
 
 	<dependencies>
@@ -54,6 +55,11 @@
 			<groupId>org.elasticsearch</groupId>
 			<artifactId>elasticsearch</artifactId>
 			<version>${elasticsearch-version}</version>
+		</dependency>
+		<dependency>
+			<groupId>com.twitter</groupId>
+			<artifactId>finagle-http_2.10</artifactId>
+			<version>${finagle-version}</version>
 		</dependency>
 
 		<!-- Test Dependencies -->
