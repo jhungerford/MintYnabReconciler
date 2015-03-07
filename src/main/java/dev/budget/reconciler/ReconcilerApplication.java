@@ -64,17 +64,4 @@ public class ReconcilerApplication extends Application<ReconcilerConfiguration> 
 			environment.jersey().register(injector.getInstance(resourceClass));
 		}
 	}
-
-	public static void main(String[] args) throws Exception {
-		ServerBuilder.safeBuild(new HelloService(),
-				ServerBuilder.get()
-						.name("hello")
-						.codec(Http.get())
-						.bindTo(new InetSocketAddress(8082))
-		);
-
-		new ReconcilerApplication(
-				new ElasticSearchModule()
-		).run(args);
-	}
 }
