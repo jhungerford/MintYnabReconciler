@@ -5,14 +5,15 @@ module.exports = (grunt) ->
 		coffee:
 			glob_to_multiple:
 				expand: true
-				flatten: true
+				flatten: false
 				cwd: 'src/main/coffeescript'
-				src: ['*.coffee']
-				dest: '/target/classes/web/js/'
+				src: ['**/*.coffee']
+#				dest: 'target/classes/web/js/'
+				dest: 'target/scala-2.10/classes/web/js'
 				ext: '.js'
 
 		watch:
-			files: 'src/main/coffeescript/*.coffee'
+			files: 'src/main/coffeescript/**/*.coffee'
 			tasks: ['coffee']
 
 	grunt.loadNpmTasks 'grunt-contrib-coffee'
