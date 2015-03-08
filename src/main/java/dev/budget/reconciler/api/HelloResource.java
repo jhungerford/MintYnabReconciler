@@ -1,9 +1,10 @@
 package dev.budget.reconciler.api;
 
-import com.twitter.finagle.Http;
-import com.twitter.io.Charsets;
-import com.twitter.util.Future;
-import org.jboss.netty.handler.codec.http.HttpResponse;
+import com.google.inject.Inject;
+import com.twitter.finagle.Service;
+import com.twitter.finagle.http.RequestBuilder;
+import org.jboss.netty.handler.codec.http.HttpMethod;
+import org.jboss.netty.handler.codec.http.HttpRequest;
 import org.slf4j.Logger;
 
 import javax.ws.rs.GET;
@@ -17,12 +18,14 @@ import static org.slf4j.LoggerFactory.getLogger;
 public class HelloResource {
 	private static final Logger log = getLogger(HelloResource.class);
 
+	@Inject
+	private Service<HttpRequest, String> helloService;
+
 	@GET
 	@Produces(MediaType.TEXT_PLAIN)
 	public String getHello() {
-		Future<HttpResponse> httpResponseFuture = Http.fetchUrl("http://localhost:8082");
-
-		HttpResponse httpResponse = httpResponseFuture.get();
-		return httpResponse.getContent().toString(Charsets.Utf8());
+		// TODO: helloService should already know it's location.
+		HttpRequest request = RequestBuilder.create().url("http://localhost:8082").withoutContent(HttpMethod.GET);
+		return helloService.apply(request).get();
 	}
 }

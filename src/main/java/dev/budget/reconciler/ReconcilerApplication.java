@@ -8,6 +8,7 @@ import dev.budget.reconciler.api.TransactionsResource;
 import dev.budget.reconciler.config.ReconcilerConfiguration;
 import dev.budget.reconciler.es.ManagedElasticSearch;
 import dev.budget.reconciler.guice.ConfigurationModule;
+import dev.budget.reconciler.guice.ServiceModule;
 import dev.budget.reconciler.health.ElasticSearchHealth;
 import io.dropwizard.Application;
 import io.dropwizard.assets.AssetsBundle;

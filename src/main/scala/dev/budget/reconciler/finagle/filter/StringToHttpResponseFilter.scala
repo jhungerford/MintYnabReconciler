@@ -6,7 +6,7 @@ import com.twitter.util.Future
 import org.jboss.netty.buffer.ChannelBuffers
 import org.jboss.netty.handler.codec.http.{DefaultHttpResponse, HttpRequest, HttpResponse, HttpResponseStatus}
 
-class PlainResponseFilter extends Filter[HttpRequest, HttpResponse, HttpRequest, String] {
+class StringToHttpResponseFilter extends Filter[HttpRequest, HttpResponse, HttpRequest, String] {
 
   override def apply(request: HttpRequest, service: Service[HttpRequest, String]): Future[HttpResponse] = {
     service.apply(request).flatMap{ str =>

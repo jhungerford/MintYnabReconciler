@@ -2,6 +2,7 @@ package dev.budget.reconciler.api;
 
 import com.google.inject.Inject;
 import com.google.inject.name.Named;
+import com.twitter.finagle.Http;
 import dev.budget.reconciler.csv.MintTransactionsReader;
 import dev.budget.reconciler.csv.TransactionsReader;
 import dev.budget.reconciler.csv.YnabTransactionsReader;
@@ -29,11 +30,11 @@ import java.util.List;
 public class TransactionsResource {
 
 	@Inject
-	private Client esClient;
-	@Inject
 	private ElasticSearchAdmin esAdmin;
 	@Inject
 	private ESTransactionDao esDao;
+//	@Inject
+//	private Http.Client client;
 
 	@PUT
 	@Path("/mint")
