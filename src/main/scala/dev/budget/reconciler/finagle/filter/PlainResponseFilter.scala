@@ -1,10 +1,10 @@
 package dev.budget.reconciler.finagle.filter
 
-import com.twitter.finagle.{Service, Filter}
+import com.twitter.finagle.{Filter, Service}
 import com.twitter.io.Charsets
-import com.twitter.util.{Await, Future}
+import com.twitter.util.Future
 import org.jboss.netty.buffer.ChannelBuffers
-import org.jboss.netty.handler.codec.http.{HttpRequest, HttpResponseStatus, DefaultHttpResponse, HttpResponse}
+import org.jboss.netty.handler.codec.http.{DefaultHttpResponse, HttpRequest, HttpResponse, HttpResponseStatus}
 
 class PlainResponseFilter extends Filter[HttpRequest, HttpResponse, HttpRequest, String] {
 
