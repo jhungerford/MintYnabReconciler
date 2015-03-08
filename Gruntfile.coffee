@@ -9,7 +9,7 @@ module.exports = (grunt) ->
 				cwd: 'src/main/coffeescript'
 				src: ['**/*.coffee']
 #				dest: 'target/classes/web/js/'
-				dest: 'target/scala-2.10/classes/web/js'
+				dest: 'target/scala-2.10/classes/web/js' # Needs to match module output path when running out of IntelliJ
 				ext: '.js'
 
 		watch:
