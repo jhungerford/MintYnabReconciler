@@ -1,5 +1,6 @@
 package dev.budget.reconciler.modules
 
+import dev.budget.reconciler.dao.ESTransactionDao
 import dev.budget.reconciler.es.{ElasticSearchAdmin, ManagedElasticSearch}
 import dev.budget.reconciler.health.ElasticSearchHealth
 import org.elasticsearch.client.Client
@@ -22,4 +23,6 @@ class ElasticSearchModule extends Module {
   bind [ManagedElasticSearch] to new ManagedElasticSearch
   bind [ElasticSearchAdmin] to new ElasticSearchAdmin
   bind [ElasticSearchHealth] to new ElasticSearchHealth
+
+  bind [ESTransactionDao] to new ESTransactionDao
 }

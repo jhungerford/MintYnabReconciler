@@ -1,6 +1,6 @@
 package dev.budget.reconciler
 
-import dev.budget.reconciler.modules.{ApplicationModule, ElasticSearchModule}
+import dev.budget.reconciler.modules.{JsonModule, ApplicationModule, ElasticSearchModule}
 import scaldi.Injectable
 
 object Main {
@@ -14,7 +14,7 @@ object Main {
 //    ServerBuilder.safeBuild(httpHelloService,
 //      ServerBuilder.get().name("hello").codec(Http.get()).bindTo(new InetSocketAddress(8082)))
 
-    implicit val mainInjector = new ApplicationModule :: new ElasticSearchModule
+    implicit val mainInjector = new ApplicationModule :: new ElasticSearchModule :: new JsonModule
     val application: ReconcilerApplication = Injectable.inject [ReconcilerApplication]
 
     application.run(args)
