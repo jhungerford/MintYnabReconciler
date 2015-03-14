@@ -5,6 +5,7 @@ import java.io.IOException
 import com.fasterxml.jackson.databind.ObjectMapper
 import dev.budget.reconciler.es.ESIndex
 import dev.budget.reconciler.model.Transaction
+import org.elasticsearch.action.index.IndexResponse
 import org.elasticsearch.action.search.{SearchRequestBuilder, SearchResponse}
 import org.elasticsearch.client.Client
 import org.elasticsearch.common.joda.time.DateTime
@@ -21,9 +22,13 @@ class ESTransactionDao(implicit val injector: Injector) extends Injectable {
   private val client: Client = inject [Client]
   private val objectMapper: ObjectMapper = inject [ObjectMapper]
 
-  @throws(classOf[IOException])
-  def index[T <: Transaction](index: ESIndex, transaction: T) {
-    client.prepareIndex(index.name, index.esType).setSource(transaction.esJson).execute.actionGet
+  def index[T <: Transaction](index: ESIndex, transaction: T): Option[Boolean] = {
+    transaction.esJson match {
+      case None => None
+      case Some(json) =>
+        val response: IndexResponse = client.prepareIndex(index.name, index.esType).setSource(json).execute.actionGet
+        Some(response.isCreated)
+    }
   }
 
   @throws(classOf[IOException])

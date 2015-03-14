@@ -38,13 +38,13 @@ public class YnabTransactionsReaderTest {
 
 		assertThat(actualTransactions)
 				.usingElementComparator((o1, o2) -> ComparisonChain.start()
-								.compare(o1.getAccount(), o2.getAccount())
-								.compare(o1.getDate(), o2.getDate())
-								.compare(o1.getPayee(), o2.getPayee())
-								.compare(o1.getMasterCategory(), o2.getMasterCategory())
-								.compare(o1.getSubCategory(), o2.getSubCategory())
-								.compare(o1.getOutflowCents(), o2.getOutflowCents())
-								.compare(o1.getInflowCents(), o2.getInflowCents())
+								.compare(o1.account(), o2.account())
+								.compare(o1.date(), o2.date())
+								.compare(o1.payee(), o2.payee())
+								.compare(o1.masterCategory(), o2.masterCategory())
+								.compare(o1.subCategory(), o2.subCategory())
+								.compare(o1.outflowCents(), o2.outflowCents())
+								.compare(o1.inflowCents(), o2.inflowCents())
 								.result()
 				).containsExactly(expectedTransactions);
 	}

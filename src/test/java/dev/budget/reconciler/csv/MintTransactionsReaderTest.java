@@ -42,13 +42,13 @@ public class MintTransactionsReaderTest {
 
 		assertThat(actualTransactions)
 				.usingElementComparator((o1, o2) -> ComparisonChain.start()
-								.compare(o1.getDate(), o2.getDate())
-								.compare(o1.getDescription(), o2.getDescription())
-								.compare(o1.getOriginalDescription(), o2.getOriginalDescription())
-								.compare(o1.getAmountCents(), o2.getAmountCents())
-								.compare(o1.getType(), o2.getType())
-								.compare(o1.getCategory(), o2.getCategory())
-								.compare(o1.getAccount(), o2.getAccount())
+								.compare(o1.date(), o2.date())
+								.compare(o1.description(), o2.description())
+								.compare(o1.originalDescription(), o2.originalDescription())
+								.compare(o1.amountCents(), o2.amountCents())
+								.compare(o1.transactionType(), o2.transactionType())
+								.compare(o1.category(), o2.category())
+								.compare(o1.account(), o2.account())
 								.result()
 				).containsExactly(expectedTransactions);
 	}
