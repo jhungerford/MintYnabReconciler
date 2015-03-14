@@ -10,6 +10,8 @@ libraryDependencies += "io.dropwizard" % "dropwizard-core" % dropwizardVersion
 
 libraryDependencies += "io.dropwizard" % "dropwizard-assets" % dropwizardVersion
 
+libraryDependencies += "com.massrelevance" %% "dropwizard-scala" % dropwizardVersion
+
 libraryDependencies += "net.sf.supercsv" % "super-csv" % "2.3.0"
 
 libraryDependencies += "com.google.guava" % "guava" % "18.0"
