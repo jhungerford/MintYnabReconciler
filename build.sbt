@@ -14,6 +14,8 @@ libraryDependencies += "com.massrelevance" %% "dropwizard-scala" % dropwizardVer
 
 libraryDependencies += "net.sf.supercsv" % "super-csv" % "2.3.0"
 
+libraryDependencies += "org.json4s" %% "json4s-native" % "3.2.11"
+
 libraryDependencies += "com.google.guava" % "guava" % "18.0"
 
 libraryDependencies += "org.scaldi" %% "scaldi" % "0.3.2"
