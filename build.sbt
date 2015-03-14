@@ -18,6 +18,8 @@ libraryDependencies += "com.google.guava" % "guava" % "18.0"
 
 libraryDependencies += "com.google.inject" % "guice" % "3.0"
 
+libraryDependencies += "org.scaldi" %% "scaldi" % "0.3.2"
+
 libraryDependencies += "org.elasticsearch" % "elasticsearch" % elasticsearchVersion
 
 libraryDependencies += "com.twitter" %% "finagle-http" % finagleVersion
