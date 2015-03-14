@@ -28,7 +28,7 @@ class TransactionsResource(implicit val injector: Injector) extends Injectable {
   @Consumes(Array("text/csv"))
   @Produces(Array(MediaType.APPLICATION_JSON))
   @throws(classOf[IOException])
-  def uploadMint(mintTransactionsCsv: String): Response = {
+  def uploadMint(mintTransactionsCsv: String): UploadResponse = {
     esAdmin.clearIndex(MintESIndex)
 
     val in: Reader = new StringReader(mintTransactionsCsv)
@@ -50,7 +50,7 @@ class TransactionsResource(implicit val injector: Injector) extends Injectable {
 
     csvReader.close()
 
-    Response.ok(new UploadResponse(successCount)).build
+    new UploadResponse(successCount)
   }
 
   @PUT
@@ -58,7 +58,7 @@ class TransactionsResource(implicit val injector: Injector) extends Injectable {
   @Consumes(Array("text/csv"))
   @Produces(Array(MediaType.APPLICATION_JSON))
   @throws(classOf[IOException])
-  def uploadYnab(ynabTransactionsCsv: String): Response = {
+  def uploadYnab(ynabTransactionsCsv: String): UploadResponse = {
     esAdmin.clearIndex(YnabESIndex)
 
     val in: Reader = new StringReader(ynabTransactionsCsv)
@@ -82,7 +82,7 @@ class TransactionsResource(implicit val injector: Injector) extends Injectable {
 
     csvReader.close()
 
-    Response.ok(new UploadResponse(successCount)).build
+    new UploadResponse(successCount)
   }
 
   @GET

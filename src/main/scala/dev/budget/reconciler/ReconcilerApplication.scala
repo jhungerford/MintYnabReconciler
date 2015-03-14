@@ -1,6 +1,7 @@
 package dev.budget.reconciler
 
 import com.massrelevance.dropwizard.ScalaApplication
+import com.massrelevance.dropwizard.bundles.ScalaBundle
 import dev.budget.reconciler.api.{TransactionsResource, HelloResource}
 import dev.budget.reconciler.es.ManagedElasticSearch
 import dev.budget.reconciler.health.ElasticSearchHealth
@@ -12,6 +13,7 @@ import scaldi.{Injectable, Injector}
 class ReconcilerApplication(implicit inj: Injector) extends ScalaApplication[Configuration] with Injectable {
 
   override def initialize(bootstrap: Bootstrap[Configuration]) = {
+    bootstrap.addBundle(new ScalaBundle)
     bootstrap.addBundle(new AssetsBundle("/web", "/web", "", "web"))
     bootstrap.addBundle(new AssetsBundle("/html", "", "index.html", "html"))
   }
