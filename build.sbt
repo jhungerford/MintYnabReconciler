@@ -12,7 +12,7 @@ libraryDependencies += "io.dropwizard" % "dropwizard-assets" % dropwizardVersion
 
 libraryDependencies += "com.massrelevance" %% "dropwizard-scala" % dropwizardVersion
 
-libraryDependencies += "net.sf.supercsv" % "super-csv" % "2.3.0"
+libraryDependencies += "com.github.tototoshi" %% "scala-csv" % "1.2.1"
 
 libraryDependencies += "org.json4s" %% "json4s-native" % "3.2.11"
 
