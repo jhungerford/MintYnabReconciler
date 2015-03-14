@@ -1,6 +1,7 @@
 package dev.budget.reconciler.api;
 
 import com.google.inject.Inject;
+import com.google.inject.name.Named;
 import com.twitter.finagle.Service;
 import com.twitter.finagle.http.RequestBuilder;
 import org.jboss.netty.handler.codec.http.HttpMethod;
@@ -19,6 +20,7 @@ public class HelloResource {
 	private static final Logger log = getLogger(HelloResource.class);
 
 	@Inject
+	@Named("helloService")
 	private Service<HttpRequest, String> helloService;
 
 	@GET
