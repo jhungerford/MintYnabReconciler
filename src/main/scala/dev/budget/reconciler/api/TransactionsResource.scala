@@ -7,7 +7,7 @@ import javax.ws.rs.core.{MediaType, Response}
 import dev.budget.reconciler.csv.handler.{ChainTransactionHandler, CountTransactionHandler, ESTransactionHandler}
 import dev.budget.reconciler.csv.{MintTransactionsReader, TransactionsReader, YnabTransactionsReader}
 import dev.budget.reconciler.dao.ESTransactionDao
-import dev.budget.reconciler.es.{ESIndex, ElasticSearchAdmin}
+import dev.budget.reconciler.es.{YnabESIndex, MintESIndex, ESIndex, ElasticSearchAdmin}
 import dev.budget.reconciler.model.{MintTransaction, Transaction, UploadResponse, YnabTransaction}
 import scaldi.{Injectable, Injector}
 
@@ -23,10 +23,10 @@ class TransactionsResource(implicit val injector: Injector) extends Injectable {
   @Produces(Array(MediaType.APPLICATION_JSON))
   @throws(classOf[IOException])
   def uploadMint(mintTransactionsCsv: String): Response = {
-    esAdmin.clearIndex(ESIndex.MINT)
+    esAdmin.clearIndex(MintESIndex)
 //    val mintTransactions: List[MintTransaction] = transactionsToList(mintTransactionsCsv, new MintTransactionsReader)
 //    val uploadedFuture: Future[Integer] = mintUploadService.apply(mintTransactions)
-    val count: Int = writeTransactions(ESIndex.MINT, mintTransactionsCsv, new MintTransactionsReader)
+    val count: Int = writeTransactions(MintESIndex, mintTransactionsCsv, new MintTransactionsReader)
 
     Response.ok(new UploadResponse(count)).build
   }
@@ -37,8 +37,8 @@ class TransactionsResource(implicit val injector: Injector) extends Injectable {
   @Produces(Array(MediaType.APPLICATION_JSON))
   @throws(classOf[IOException])
   def uploadYnab(ynabTransactions: String): Response = {
-    esAdmin.clearIndex(ESIndex.YNAB)
-    val count: Int = writeTransactions(ESIndex.YNAB, ynabTransactions, new YnabTransactionsReader)
+    esAdmin.clearIndex(YnabESIndex)
+    val count: Int = writeTransactions(YnabESIndex, ynabTransactions, new YnabTransactionsReader)
     val uploadResponse: UploadResponse = new UploadResponse(count)
     Response.ok(uploadResponse).build
   }
@@ -48,8 +48,8 @@ class TransactionsResource(implicit val injector: Injector) extends Injectable {
   @Produces(Array(MediaType.APPLICATION_JSON))
   @throws(classOf[IOException])
   def getDiff: Response = {
-    val mintTransactions: Seq[MintTransaction] = esDao.allThisMonth(ESIndex.MINT, classOf[MintTransaction])
-    val ynabTransactions: Seq[YnabTransaction] = esDao.allThisMonth(ESIndex.YNAB, classOf[YnabTransaction])
+    val mintTransactions: Seq[MintTransaction] = esDao.allThisMonth(MintESIndex, classOf[MintTransaction])
+    val ynabTransactions: Seq[YnabTransaction] = esDao.allThisMonth(YnabESIndex, classOf[YnabTransaction])
     Response.noContent.build
   }
 

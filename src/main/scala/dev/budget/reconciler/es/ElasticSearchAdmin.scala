@@ -20,8 +20,8 @@ class ElasticSearchAdmin(implicit val injector: Injector) extends Injectable {
   @throws(classOf[IOException])
   def createIndexIfNotExists(index: ESIndex) {
     if (!indexExists(index.name)) {
-      log.info("Creating ES index '{}' from {}", index.name, index.fileName)
-      val source: String = Resources.toString(Resources.getResource(index.fileName), Charset.defaultCharset)
+      log.info("Creating ES index '{}' from {}", index.name, index.indexFileName)
+      val source: String = Resources.toString(Resources.getResource(index.indexFileName), Charset.defaultCharset)
       client.admin.indices.prepareCreate(index.name).setSource(source).execute.actionGet
       log.info("ES index {} created", index.name)
     } else {

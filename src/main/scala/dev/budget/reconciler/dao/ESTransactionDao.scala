@@ -23,7 +23,7 @@ class ESTransactionDao(implicit val injector: Injector) extends Injectable {
 
   @throws(classOf[IOException])
   def index[T <: Transaction](index: ESIndex, transaction: T) {
-    client.prepareIndex(index.name, index.`type`).setSource(transaction.esJson).execute.actionGet
+    client.prepareIndex(index.name, index.esType).setSource(transaction.esJson).execute.actionGet
   }
 
   @throws(classOf[IOException])
@@ -33,7 +33,7 @@ class ESTransactionDao(implicit val injector: Injector) extends Injectable {
 
     val request: SearchRequestBuilder = client
       .prepareSearch(index.name)
-      .setTypes(index.`type`)
+      .setTypes(index.esType)
       .setQuery(QueryBuilders.filteredQuery(
         QueryBuilders.matchAllQuery,
         FilterBuilders.rangeFilter("date").gte(startOfMonth).lte(endOfMonth))

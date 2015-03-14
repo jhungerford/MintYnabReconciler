@@ -16,9 +16,8 @@ class ManagedElasticSearch(implicit val injector: Injector) extends Managed with
     log.info("Starting ElasticSearch...")
     node.start()
 
-    for (esIndex <- ESIndex.values()) {
-      esAdmin.createIndexIfNotExists(esIndex)
-    }
+    esAdmin.createIndexIfNotExists(MintESIndex)
+    esAdmin.createIndexIfNotExists(YnabESIndex)
 
     log.info("Started ElasticSearch")
   }
