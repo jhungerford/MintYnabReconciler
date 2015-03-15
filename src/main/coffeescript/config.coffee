@@ -1,5 +1,5 @@
 require.config
-	deps: ['app', 'routes', 'components/upload-csv']
+	deps: ['app', 'routes', 'components/upload-csv', 'components/date-paginator']
 
 	baseUrl: 'web/js'
 
