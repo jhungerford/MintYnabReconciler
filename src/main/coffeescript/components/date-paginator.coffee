@@ -10,7 +10,7 @@ define (require) ->
 		earliestMonth: null
 		latestMonth: null
 
-		currentMonth: Dates.asMonth(Dates.now())
+		currentMonth: Ember.computed.oneWay 'latestMonth'
 
 		previousYear: ( -> @get('currentMonth').minus(1, 'years').get('year') ).property('currentMonth')
 		nextYear: ( -> @get('currentMonth').plus(1, 'years').get('year') ).property('currentMonth')
