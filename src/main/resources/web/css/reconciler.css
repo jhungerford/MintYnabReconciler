@@ -1,7 +1,7 @@
 body {
 	color: #434A54;
 	font-family: "Open Sans", "Helvetica Neue", "Helvetica", Helvetica, Arial, sans-serif;
-	background: #E6E9ED;
+	background: #CFD8DC;
 }
 
 .csv-textarea {
@@ -36,4 +36,9 @@ body {
 	margin: 6px 0 0;
 	font-size: 0.7rem;
 	color: #666666;
+}
+
+.diff-background {
+	margin: 1em 0 1em 0;
+	background: #ECEFF1;
 }

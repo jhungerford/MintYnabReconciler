@@ -37,8 +37,10 @@ define (require) ->
 		actions:
 			selectMonth: (month) ->
 				@set('currentMonth', month.month) if month.enabled
+				@sendAction 'select', @get('currentMonth')
 				false
 
+			# TODO: should previous and next year actually update the selected month?  or should they change the year and make the current month go off the paginator?
 			previousYear: ->
 				@set('currentMonth', @get('currentMonth').minus(1, 'years')) if @get('previousYearEnabled')
 				false
