@@ -7,7 +7,7 @@ import javax.ws.rs.core.{MediaType, Response}
 import com.github.tototoshi.csv.CSVReader
 import dev.budget.reconciler.dao.ESTransactionDao
 import dev.budget.reconciler.es.{ESIndex, ElasticSearchAdmin, MintESIndex, YnabESIndex}
-import dev.budget.reconciler.model.{MintTransaction, Transaction, UploadResponse, YnabTransaction}
+import dev.budget.reconciler.model._
 import org.joda.time.LocalDate
 import org.joda.time.format.{DateTimeFormat, DateTimeFormatter}
 import org.slf4j.Logger
@@ -88,11 +88,16 @@ class TransactionsResource(implicit val injector: Injector) extends Injectable {
   @GET
   @Path("/diff")
   @Produces(Array(MediaType.APPLICATION_JSON))
-  @throws(classOf[IOException])
-  def getDiff: Response = {
-    val mintTransactions: Seq[MintTransaction] = esDao.allThisMonth(MintESIndex, classOf[MintTransaction])
-    val ynabTransactions: Seq[YnabTransaction] = esDao.allThisMonth(YnabESIndex, classOf[YnabTransaction])
-    Response.noContent.build
+  def getDiff: DiffResponse = {
+//    val mintTransactions: Seq[MintTransaction] = esDao.allThisMonth(MintESIndex, classOf[MintTransaction])
+//    val ynabTransactions: Seq[YnabTransaction] = esDao.allThisMonth(YnabESIndex, classOf[YnabTransaction])
+    val mintRange: (LocalDate, LocalDate) = esDao.dateRange(MintESIndex)
+    val ynabRange: (LocalDate, LocalDate) = esDao.dateRange(YnabESIndex)
+
+    val earliestDate = if (mintRange._1.isBefore(ynabRange._1)) mintRange._1 else ynabRange._1
+    val latestDate = if (mintRange._2.isAfter(ynabRange._2)) mintRange._2 else ynabRange._2
+
+    new DiffResponse(earliestDate, latestDate)
   }
 
   private def indexTransactions[T <: Transaction](esIndex: ESIndex, transactions: Seq[T]): Int = {

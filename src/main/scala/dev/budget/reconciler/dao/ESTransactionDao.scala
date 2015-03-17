@@ -6,12 +6,15 @@ import com.fasterxml.jackson.databind.ObjectMapper
 import dev.budget.reconciler.es.ESIndex
 import dev.budget.reconciler.model.Transaction
 import org.elasticsearch.action.index.{IndexRequestBuilder, IndexResponse}
-import org.elasticsearch.action.search.{SearchRequestBuilder, SearchResponse}
+import org.elasticsearch.action.search.{SearchRequestBuilder, SearchResponse, SearchType}
 import org.elasticsearch.client.Client
-import org.elasticsearch.common.joda.time.DateTime
 import org.elasticsearch.index.query.{FilterBuilders, QueryBuilders}
 import org.elasticsearch.search.SearchHit
+import org.elasticsearch.search.aggregations.AggregationBuilders
+import org.elasticsearch.search.aggregations.bucket.range.date.DateRange
+import org.elasticsearch.search.aggregations.metrics.stats.Stats
 import org.elasticsearch.search.sort.{SortBuilders, SortOrder}
+import org.joda.time.{LocalDate, DateTime}
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory.getLogger
 import scaldi.{Injectable, Injector}
@@ -53,5 +56,19 @@ class ESTransactionDao(implicit val injector: Injector) extends Injectable {
 
     val hits: Seq[SearchHit] = response.getHits.getHits
     hits.map( hit => objectMapper.readValue(hit.getSourceAsString, transactionType))
+  }
+
+  def dateRange(index: ESIndex): (LocalDate, LocalDate) = {
+    val request: SearchRequestBuilder = client
+      .prepareSearch(index.name)
+      .setTypes(index.esType)
+      .setSearchType(SearchType.COUNT)
+      .addAggregation(AggregationBuilders.stats("date").field("date"))
+
+    val response: SearchResponse = request.execute.actionGet
+
+    val dateStats: Stats = response.getAggregations.get("date")
+
+    (new LocalDate(dateStats.getMin.toLong), new LocalDate(dateStats.getMax.toLong))
   }
 }
