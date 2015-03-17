@@ -4,8 +4,9 @@
 			<ul class="pagination">
 				<li {{bind-attr class=":arrow previousYearEnabled::unavailable"}}><a>&laquo; {{previousYear}}</a></li>
 				{{#each month in months}}
-					{{log month}}
-					<li {{bind-attr class="month.current:current month.enabled::unavailable"}}><a>{{month.name}}</a></li>
+					<li {{bind-attr class="month.current:current month.enabled::unavailable"}}>
+						<a {{action 'selectMonth' month}}>{{month.name}}</a>
+					</li>
 				{{/each}}
 				<li {{bind-attr class=":arrow nextYearEnabled::unavailable"}}><a>{{nextYear}} &raquo;</a></li>
 			</ul>

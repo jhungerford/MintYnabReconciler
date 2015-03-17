@@ -27,8 +27,14 @@ define (require) ->
 				date = Dates.parseYearMonthDay([currentMonth.get('year'), i + 1, 1])
 				{
 					name: month
+					month: date
 					current: date.eq(currentMonth)
 					enabled: date.lte(latestMonth) and date.gte(earliestMonth)
 				}
 			, @
 			).property 'currentMonth'
+
+		actions:
+			selectMonth: (month) ->
+				@set('currentMonth', month.month) if month.enabled
+				false
