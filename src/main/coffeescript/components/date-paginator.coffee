@@ -15,8 +15,8 @@ define (require) ->
 		previousYear: ( -> @get('currentMonth').minus(1, 'years').get('year') ).property('currentMonth')
 		nextYear: ( -> @get('currentMonth').plus(1, 'years').get('year') ).property('currentMonth')
 
-		previousYearEnabled: ( -> @get('currentMonth').minus(1, 'years').gte(@get('earliestMonth')) ).property('currentMonth')
-		nextYearEnabled: ( -> @get('currentMonth').plus(1, 'years').lte(@get('latestMonth')) ).property('currentMonth')
+		previousYearEnabled: ( -> @get('currentMonth').minus(1, 'years').gte(@get('earliestMonth')) ).property('currentMonth') # TODO: bug - should check if the last month of the previous year is gte earliestMonth
+		nextYearEnabled: ( -> @get('currentMonth').plus(1, 'years').lte(@get('latestMonth')) ).property('currentMonth') # TODO: bug - should check if the first month of the next year is lte latestMonth
 
 		months: ( ->
 			currentMonth = @get('currentMonth')
@@ -37,4 +37,12 @@ define (require) ->
 		actions:
 			selectMonth: (month) ->
 				@set('currentMonth', month.month) if month.enabled
+				false
+
+			previousYear: ->
+				@set('currentMonth', @get('currentMonth').minus(1, 'years')) if @get('previousYearEnabled')
+				false
+
+			nextYear: ->
+				@set('currentMonth', @get('currentMonth').plus(1, 'years')) if @get('nextYearEnabled')
 				false
