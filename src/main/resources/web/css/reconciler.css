@@ -1,4 +1,5 @@
 body {
+	height: auto;
 	color: #434A54;
 	font-family: "Open Sans", "Helvetica Neue", "Helvetica", Helvetica, Arial, sans-serif;
 	background: #CFD8DC;
@@ -14,18 +15,12 @@ body {
 	height: 650px;
 }
 
-.full {
-	max-width: 100%;
-}
-
 .diff-correct {
-	font-weight: bold;
-	color: #43AC6A;
+	border-left: 0.5em solid #DCEDC8;
 }
 
 .diff-wrong {
-	font-weight: bold;
-	color: #f04124;
+	border-left: 0.5em solid #FFCDD2;
 }
 
 .footer {
@@ -38,7 +33,18 @@ body {
 	color: #666666;
 }
 
-.diff-background {
-	margin: 1em 0 1em 0;
+.container {
+	max-width: calc(100% - 1em);
+	margin: 0.5em;
+	padding: 1em 0 1em 0;
 	background: #ECEFF1;
+	border-radius: 0.25em;
+}
+
+ul.pagination {
+	margin-bottom: 0;
+}
+
+.diff-paginator {
+	padding: 0.5em 0 0.5em 0;
 }

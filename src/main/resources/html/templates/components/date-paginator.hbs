@@ -1,15 +1,11 @@
-<div class="row">
-	<div class="small-12 columns">
-		<div class="pagination-centered">
-			<ul class="pagination">
-				<li {{bind-attr class=":arrow previousYearEnabled::unavailable"}}><a {{action 'previousYear'}}>&laquo; {{previousYear}}</a></li>
-				{{#each month in months}}
-					<li {{bind-attr class="month.current:current month.enabled::unavailable"}}>
-						<a {{action 'selectMonth' month}}>{{month.name}}</a>
-					</li>
-				{{/each}}
-				<li {{bind-attr class=":arrow nextYearEnabled::unavailable"}}><a {{action 'nextYear'}}>{{nextYear}} &raquo;</a></li>
-			</ul>
-		</div>
-	</div>
+<div class="pagination-centered">
+	<ul class="pagination">
+		<li {{bind-attr class=":arrow previousYearEnabled::unavailable"}}><a {{action 'previousYear'}}>&laquo; {{previousYear}}</a></li>
+		{{#each month in months}}
+			<li {{bind-attr class="month.current:current month.enabled::unavailable"}}>
+				<a {{action 'selectMonth' month}}>{{month.name}}</a>
+			</li>
+		{{/each}}
+		<li {{bind-attr class=":arrow nextYearEnabled::unavailable"}}><a {{action 'nextYear'}}>{{nextYear}} &raquo;</a></li>
+	</ul>
 </div>
