@@ -4,6 +4,7 @@ import java.io.IOException
 
 import org.elasticsearch.common.xcontent.{XContentFactory, XContentBuilder}
 import org.joda.time.LocalDate
+import org.joda.time.format.DateTimeFormat
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory.getLogger
 
@@ -19,11 +20,13 @@ case class YnabTransaction(
   private val log: Logger = getLogger(getClass)
 
   override def esJson: Option[XContentBuilder] = {
+    val dateStr: String = DateTimeFormat.forPattern("yyyy-MM-dd").print(date)
+
     try {
       Some(XContentFactory.jsonBuilder()
         .startObject
           .field("account", account)
-          .field("date", date)
+          .field("date", dateStr)
           .field("payee", payee)
           .field("masterCategory", masterCategory)
           .field("subCategory", subCategory)

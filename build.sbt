@@ -1,5 +1,3 @@
-import sbtassembly.Plugin.AssemblyKeys._
-
 scalaVersion := "2.10.4"
 
 val dropwizardVersion = "0.7.1"
@@ -14,7 +12,9 @@ libraryDependencies += "com.massrelevance" %% "dropwizard-scala" % dropwizardVer
 
 libraryDependencies += "com.github.tototoshi" %% "scala-csv" % "1.2.1"
 
-libraryDependencies += "org.json4s" %% "json4s-native" % "3.2.11"
+libraryDependencies += "org.json4s" %% "json4s-jackson" % "3.2.11"
+
+libraryDependencies += "org.json4s" %% "json4s-ext" % "3.2.11"
 
 libraryDependencies += "com.google.guava" % "guava" % "18.0"
 

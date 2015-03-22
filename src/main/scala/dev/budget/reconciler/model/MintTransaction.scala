@@ -2,8 +2,9 @@ package dev.budget.reconciler.model
 
 import java.io.IOException
 
-import org.elasticsearch.common.xcontent.{XContentFactory, XContentBuilder}
+import org.elasticsearch.common.xcontent.{XContentBuilder, XContentFactory}
 import org.joda.time.LocalDate
+import org.joda.time.format.DateTimeFormat
 import org.slf4j.Logger
 
 case class MintTransaction(
@@ -18,14 +19,16 @@ case class MintTransaction(
   private val log: Logger = org.slf4j.LoggerFactory.getLogger(getClass)
 
   override def esJson: Option[XContentBuilder] = {
+    val dateStr: String = DateTimeFormat.forPattern("yyyy-MM-dd").print(date)
+
     try {
       Some(XContentFactory.jsonBuilder()
         .startObject
-          .field("date", date)
+          .field("date", dateStr)
           .field("description", description)
           .field("originalDescription", originalDescription)
           .field("amountCents", amountCents)
-          .field("type", transactionType)
+          .field("transactionType", transactionType)
           .field("category", category)
           .field("account", account)
         .endObject

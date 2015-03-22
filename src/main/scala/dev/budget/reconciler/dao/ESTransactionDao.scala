@@ -11,10 +11,13 @@ import org.elasticsearch.client.Client
 import org.elasticsearch.index.query.{FilterBuilders, QueryBuilders}
 import org.elasticsearch.search.SearchHit
 import org.elasticsearch.search.aggregations.AggregationBuilders
-import org.elasticsearch.search.aggregations.bucket.range.date.DateRange
 import org.elasticsearch.search.aggregations.metrics.stats.Stats
 import org.elasticsearch.search.sort.{SortBuilders, SortOrder}
-import org.joda.time.{LocalDate, DateTime}
+import org.joda.time.format.DateTimeFormat
+import org.joda.time.{DateTime, LocalDate}
+import org.json4s._
+import org.json4s.ext.JodaTimeSerializers
+import org.json4s.jackson.JsonMethods
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory.getLogger
 import scaldi.{Injectable, Injector}
@@ -35,10 +38,9 @@ class ESTransactionDao(implicit val injector: Injector) extends Injectable {
     }
   }
 
-  @throws(classOf[IOException])
-  def allThisMonth[T <: Transaction](index: ESIndex, transactionType: Class[T]): Seq[T] = {
-    val startOfMonth: DateTime = DateTime.now.withDayOfMonth(1).withTimeAtStartOfDay
-    val endOfMonth: DateTime = DateTime.now.dayOfMonth.withMaximumValue
+  def allForMonth[T <: Transaction](index: ESIndex, year: Int, month: Int)(implicit m: Manifest[T]): Seq[T] = {
+    val startOfMonth: DateTime = new DateTime(year, month, 1, 0, 0)
+    val endOfMonth: DateTime = new DateTime(year, month + 1, 1, 0, 0).minusMillis(1)
 
     val request: SearchRequestBuilder = client
       .prepareSearch(index.name)
@@ -50,12 +52,15 @@ class ESTransactionDao(implicit val injector: Injector) extends Injectable {
       .order(SortOrder.DESC))
       .setSize(1000)
 
-    log.info("allThisMonth query for index {}: {}", index.name, request)
+    log.info(s"allThisMonth query for index ${index.name}: $request")
 
     val response: SearchResponse = request.execute.actionGet
 
+    implicit val formats = DefaultFormats + LocalDateSerializer
     val hits: Seq[SearchHit] = response.getHits.getHits
-    hits.map( hit => objectMapper.readValue(hit.getSourceAsString, transactionType))
+    hits.map( hit =>
+      JsonMethods.parse(StringInput(hit.getSourceAsString)).extract[T]
+    )
   }
 
   def dateRange(index: ESIndex): (LocalDate, LocalDate) = {
@@ -72,3 +77,10 @@ class ESTransactionDao(implicit val injector: Injector) extends Injectable {
     (new LocalDate(dateStats.getMin.toLong), new LocalDate(dateStats.getMax.toLong))
   }
 }
+
+case object LocalDateSerializer extends CustomSerializer[LocalDate](format => ({
+  case JString(str) => DateTimeFormat.forPattern("yyyy-MM-dd").parseLocalDate(str)
+  case JNull => null
+},{
+  case date: LocalDate => JString(DateTimeFormat.forPattern("yyyy-MM-dd").print(date))
+}))

@@ -6,7 +6,7 @@
         "description": {"type": "string"},
         "originalDescription": {"type": "string"},
         "amountCents": {"type": "integer"},
-        "type": {"type": "string"},
+        "transactionType": {"type": "string"},
         "category": {"type": "string"},
         "account": {"type": "string"}
       }
