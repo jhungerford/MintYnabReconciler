@@ -17,6 +17,7 @@ import scaldi.{Injectable, Injector}
 import scala.util.matching.Regex
 
 @Path("/v1/transactions")
+@Produces(Array(MediaType.APPLICATION_JSON))
 class TransactionsResource(implicit val injector: Injector) extends Injectable {
   private val log: Logger = getLogger(getClass)
 
@@ -26,8 +27,6 @@ class TransactionsResource(implicit val injector: Injector) extends Injectable {
   @PUT
   @Path("/mint")
   @Consumes(Array("text/csv"))
-  @Produces(Array(MediaType.APPLICATION_JSON))
-  @throws(classOf[IOException])
   def uploadMint(mintTransactionsCsv: String): UploadResponse = {
     esAdmin.clearIndex(MintESIndex)
 
@@ -56,8 +55,6 @@ class TransactionsResource(implicit val injector: Injector) extends Injectable {
   @PUT
   @Path("/ynab")
   @Consumes(Array("text/csv"))
-  @Produces(Array(MediaType.APPLICATION_JSON))
-  @throws(classOf[IOException])
   def uploadYnab(ynabTransactionsCsv: String): UploadResponse = {
     esAdmin.clearIndex(YnabESIndex)
 
@@ -86,18 +83,23 @@ class TransactionsResource(implicit val injector: Injector) extends Injectable {
   }
 
   @GET
-  @Path("/diff")
-  @Produces(Array(MediaType.APPLICATION_JSON))
-  def getDiff: DiffResponse = {
-//    val mintTransactions: Seq[MintTransaction] = esDao.allThisMonth(MintESIndex, classOf[MintTransaction])
-//    val ynabTransactions: Seq[YnabTransaction] = esDao.allThisMonth(YnabESIndex, classOf[YnabTransaction])
+  @Path("/diff/range")
+  def getDiffRange(): DiffRangeResponse = {
     val mintRange: (LocalDate, LocalDate) = esDao.dateRange(MintESIndex)
     val ynabRange: (LocalDate, LocalDate) = esDao.dateRange(YnabESIndex)
 
     val earliestDate = if (mintRange._1.isBefore(ynabRange._1)) mintRange._1 else ynabRange._1
     val latestDate = if (mintRange._2.isAfter(ynabRange._2)) mintRange._2 else ynabRange._2
 
-    new DiffResponse(earliestDate, latestDate)
+    new DiffRangeResponse(earliestDate, latestDate)
+  }
+
+  @GET
+  @Path("/diff/{month}/{year}")
+  def getDiff(@PathParam("month") month: Int, @PathParam("year") year: Int): DiffResponse = {
+//    val mintTransactions: Seq[MintTransaction] = esDao.allThisMonth(MintESIndex, classOf[MintTransaction])
+//    val ynabTransactions: Seq[YnabTransaction] = esDao.allThisMonth(YnabESIndex, classOf[YnabTransaction])
+    new DiffResponse
   }
 
   private def indexTransactions[T <: Transaction](esIndex: ESIndex, transactions: Seq[T]): Int = {

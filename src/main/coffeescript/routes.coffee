@@ -7,7 +7,7 @@ define (require) ->
 	App.Router.map( ->
 		@resource 'upload'
 		@resource 'diff', ->
-			@route 'view'
+			@route 'view', {path: '/view/:year/:month'}
 			@route 'loading'
 			@route 'error'
 	)

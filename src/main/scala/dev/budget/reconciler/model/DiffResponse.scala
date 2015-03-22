@@ -1,7 +1,5 @@
 package dev.budget.reconciler.model
 
-import org.joda.time.LocalDate
+class DiffResponse {
 
-case class DiffResponse(
-  earliestDate: LocalDate,
-  latestDate: LocalDate)
+}
