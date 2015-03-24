@@ -1,7 +1,7 @@
 package dev.budget.reconciler.dao
 
 import com.fasterxml.jackson.databind.ObjectMapper
-import dev.budget.reconciler.es.ESIndex
+import dev.budget.reconciler.es.{MintESIndex, ESIndex}
 import dev.budget.reconciler.model.{MintTransaction, Transaction, YnabTransaction}
 import org.elasticsearch.action.index.{IndexRequestBuilder, IndexResponse}
 import org.elasticsearch.action.search.{SearchRequestBuilder, SearchResponse, SearchType}
@@ -57,10 +57,7 @@ class ESTransactionDao(implicit val injector: Injector) extends Injectable {
 
 
     val hits: Seq[SearchHit] = response.getHits.getHits
-    hits.map { hit =>
-      val json: JValue = JsonMethods.parse(StringInput(hit.getSourceAsString)) merge JObject("id" -> JString(hit.getId))
-      json.extract[T]
-    }
+    hits.map { hit => hitToTransaction(hit) }
   }
 
   def dateRange(index: ESIndex): (LocalDate, LocalDate) = {
@@ -77,7 +74,35 @@ class ESTransactionDao(implicit val injector: Injector) extends Injectable {
     (new LocalDate(dateStats.getMin.toLong), new LocalDate(dateStats.getMax.toLong))
   }
 
-  def closestMintTransaction(transaction: YnabTransaction): Option[MintTransaction] = ???
+  def closestMintTransaction(ynab: YnabTransaction): Option[MintTransaction] = {
+    val amount = if (ynab.outflowCents > 0) ynab.outflowCents else ynab.inflowCents
+
+    val request: SearchRequestBuilder = client
+      .prepareSearch(MintESIndex.name)
+      .setTypes(MintESIndex.esType)
+      .setSize(1) // Only interested in the closest match
+      .setQuery(QueryBuilders.boolQuery()
+        .should(QueryBuilders.fuzzyQuery("date", ynab.date))
+        .should(QueryBuilders.fuzzyQuery("amountCents", amount))
+        .should(QueryBuilders.matchQuery("description", ynab.payee))
+        .should(QueryBuilders.matchQuery("originalDescription", ynab.payee))
+      )
+
+    val response: SearchResponse = request.execute.actionGet
+
+    log.info(s"Closest mint transaction to $ynab: $response")
+
+    response.getHits match {
+      case hits if hits.getTotalHits == 0 => None
+      case hits if hits.getAt(0).score() < 1.5 => None
+      case hits => Some(hitToTransaction[MintTransaction](hits.getAt(0)))
+    }
+  }
+
+  def hitToTransaction[T <: Transaction](hit: SearchHit)(implicit m: Manifest[T]): T = {
+    val json: JValue = JsonMethods.parse(StringInput(hit.getSourceAsString)) merge JObject("id" -> JString(hit.getId))
+    json.extract[T]
+  }
 }
 
 case object LocalDateSerializer extends CustomSerializer[LocalDate](format => ({
