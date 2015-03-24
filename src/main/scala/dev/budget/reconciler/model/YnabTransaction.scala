@@ -15,7 +15,8 @@ case class YnabTransaction(
   masterCategory: String,
   subCategory: String,
   outflowCents: Long,
-  inflowCents: Long) extends Transaction {
+  inflowCents: Long,
+  override val id: Option[String] = None) extends Transaction {
 
   private val log: Logger = getLogger(getClass)
 

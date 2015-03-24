@@ -14,7 +14,8 @@ case class MintTransaction(
   amountCents: Long,
   transactionType: String,
   category: String,
-  account: String) extends Transaction {
+  account: String,
+  override val id: Option[String] = None) extends Transaction {
 
   private val log: Logger = org.slf4j.LoggerFactory.getLogger(getClass)
 

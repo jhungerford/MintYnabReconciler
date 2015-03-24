@@ -1,10 +1,8 @@
 package dev.budget.reconciler.dao
 
-import java.io.IOException
-
 import com.fasterxml.jackson.databind.ObjectMapper
 import dev.budget.reconciler.es.ESIndex
-import dev.budget.reconciler.model.Transaction
+import dev.budget.reconciler.model.{MintTransaction, Transaction, YnabTransaction}
 import org.elasticsearch.action.index.{IndexRequestBuilder, IndexResponse}
 import org.elasticsearch.action.search.{SearchRequestBuilder, SearchResponse, SearchType}
 import org.elasticsearch.client.Client
@@ -14,9 +12,8 @@ import org.elasticsearch.search.aggregations.AggregationBuilders
 import org.elasticsearch.search.aggregations.metrics.stats.Stats
 import org.elasticsearch.search.sort.{SortBuilders, SortOrder}
 import org.joda.time.format.DateTimeFormat
-import org.joda.time.{DateTime, LocalDate}
+import org.joda.time.{DateTime, DateTimeZone, LocalDate}
 import org.json4s._
-import org.json4s.ext.JodaTimeSerializers
 import org.json4s.jackson.JsonMethods
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory.getLogger
@@ -24,6 +21,8 @@ import scaldi.{Injectable, Injector}
 
 class ESTransactionDao(implicit val injector: Injector) extends Injectable {
   private val log: Logger = getLogger(getClass)
+
+  private implicit val formats = DefaultFormats + LocalDateSerializer
 
   private val client: Client = inject [Client]
   private val objectMapper: ObjectMapper = inject [ObjectMapper]
@@ -39,15 +38,15 @@ class ESTransactionDao(implicit val injector: Injector) extends Injectable {
   }
 
   def allForMonth[T <: Transaction](index: ESIndex, year: Int, month: Int)(implicit m: Manifest[T]): Seq[T] = {
-    val startOfMonth: DateTime = new DateTime(year, month, 1, 0, 0)
-    val endOfMonth: DateTime = new DateTime(year, month + 1, 1, 0, 0).minusMillis(1)
+    val startOfMonth: DateTime = new DateTime(year, month, 1, 0, 0, DateTimeZone.UTC)
+    val endOfMonth: DateTime = new DateTime(year, month + 1, 1, 0, 0, DateTimeZone.UTC)
 
     val request: SearchRequestBuilder = client
       .prepareSearch(index.name)
       .setTypes(index.esType)
       .setQuery(QueryBuilders.filteredQuery(
         QueryBuilders.matchAllQuery,
-        FilterBuilders.rangeFilter("date").gte(startOfMonth).lte(endOfMonth))
+        FilterBuilders.rangeFilter("date").gte(startOfMonth).lt(endOfMonth))
       ).addSort(SortBuilders.fieldSort("date")
       .order(SortOrder.DESC))
       .setSize(1000)
@@ -56,11 +55,12 @@ class ESTransactionDao(implicit val injector: Injector) extends Injectable {
 
     val response: SearchResponse = request.execute.actionGet
 
-    implicit val formats = DefaultFormats + LocalDateSerializer
+
     val hits: Seq[SearchHit] = response.getHits.getHits
-    hits.map( hit =>
-      JsonMethods.parse(StringInput(hit.getSourceAsString)).extract[T]
-    )
+    hits.map { hit =>
+      val json: JValue = JsonMethods.parse(StringInput(hit.getSourceAsString)) merge JObject("id" -> JString(hit.getId))
+      json.extract[T]
+    }
   }
 
   def dateRange(index: ESIndex): (LocalDate, LocalDate) = {
@@ -76,6 +76,8 @@ class ESTransactionDao(implicit val injector: Injector) extends Injectable {
 
     (new LocalDate(dateStats.getMin.toLong), new LocalDate(dateStats.getMax.toLong))
   }
+
+  def closestMintTransaction(transaction: YnabTransaction): Option[MintTransaction] = ???
 }
 
 case object LocalDateSerializer extends CustomSerializer[LocalDate](format => ({

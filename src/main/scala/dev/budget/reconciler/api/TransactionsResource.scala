@@ -99,7 +99,14 @@ class TransactionsResource(implicit val injector: Injector) extends Injectable {
   def getDiff(@PathParam("year") year: Int, @PathParam("month") month: Int): DiffResponse = {
     val mintTransactions: Seq[MintTransaction] = esDao.allForMonth[MintTransaction](MintESIndex, year, month)
     val ynabTransactions: Seq[YnabTransaction] = esDao.allForMonth[YnabTransaction](YnabESIndex, year, month)
-    new DiffResponse
+
+    val ynabMatches: Seq[(YnabTransaction, Option[MintTransaction])] = ynabTransactions.map{ ynab =>
+      (ynab, esDao.closestMintTransaction(ynab))
+    }
+
+
+
+    new DiffResponse(null)
   }
 
   private def indexTransactions[T <: Transaction](esIndex: ESIndex, transactions: Seq[T]): Int = {
