@@ -16,6 +16,21 @@ define (require) ->
 	App.DiffViewController = Ember.ObjectController.extend
 		needs: ['diff']
 
+	App.DiffTransactionController = Ember.ObjectController.extend
+		isCorrect: (-> @get('differenceType') is 'Correct' ).property('differenceType')
+		date: (->
+			ynabDate = @get('ynabDate')
+			if ynabDate? then ynabDate else @get('mintDate')
+		).property('mintDate', 'ynabDate')
+		payee: (->
+			'Safeway'
+		).property('mintTransaction', 'ynabTransaction')
+		amount: (->
+			'$3.50'
+		).property('mintCents', 'ynabCents')
+		description: (->
+		).property('differenceType')
+
 	App.DiffErrorRoute = Ember.Route.extend()
 
 	App.DiffRoute = Ember.Route.extend
