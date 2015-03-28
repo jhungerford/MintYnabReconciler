@@ -3,6 +3,7 @@ package dev.budget.reconciler.dao
 import com.fasterxml.jackson.databind.ObjectMapper
 import dev.budget.reconciler.es.{MintESIndex, ESIndex}
 import dev.budget.reconciler.model.{MintTransaction, Transaction, YnabTransaction}
+import dev.budget.reconciler.util.DateUtil
 import org.elasticsearch.action.index.{IndexRequestBuilder, IndexResponse}
 import org.elasticsearch.action.search.{SearchRequestBuilder, SearchResponse, SearchType}
 import org.elasticsearch.client.Client
@@ -106,8 +107,8 @@ class ESTransactionDao(implicit val injector: Injector) extends Injectable {
 }
 
 case object LocalDateSerializer extends CustomSerializer[LocalDate](format => ({
-  case JString(str) => DateTimeFormat.forPattern("yyyy-MM-dd").parseLocalDate(str)
+  case JString(str) => DateUtil.parse(str)
   case JNull => null
 },{
-  case date: LocalDate => JString(DateTimeFormat.forPattern("yyyy-MM-dd").print(date))
+  case date: LocalDate => JString(DateUtil.format(date))
 }))

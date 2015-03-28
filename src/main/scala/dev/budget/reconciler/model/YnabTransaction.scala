@@ -2,6 +2,7 @@ package dev.budget.reconciler.model
 
 import java.io.IOException
 
+import dev.budget.reconciler.util.DateUtil
 import org.elasticsearch.common.xcontent.{XContentFactory, XContentBuilder}
 import org.joda.time.LocalDate
 import org.joda.time.format.DateTimeFormat
@@ -20,14 +21,14 @@ case class YnabTransaction(
 
   private val log: Logger = getLogger(getClass)
 
-  override def esJson: Option[XContentBuilder] = {
-    val dateStr: String = DateTimeFormat.forPattern("yyyy-MM-dd").print(date)
+  lazy val amountCents: Long = if (outflowCents > 0) outflowCents else inflowCents
 
+  override def esJson: Option[XContentBuilder] = {
     try {
       Some(XContentFactory.jsonBuilder()
         .startObject
           .field("account", account)
-          .field("date", dateStr)
+          .field("date", DateUtil.format(date))
           .field("payee", payee)
           .field("masterCategory", masterCategory)
           .field("subCategory", subCategory)

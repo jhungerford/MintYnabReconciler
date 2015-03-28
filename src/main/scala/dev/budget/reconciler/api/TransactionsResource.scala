@@ -8,6 +8,7 @@ import com.github.tototoshi.csv.CSVReader
 import dev.budget.reconciler.dao.ESTransactionDao
 import dev.budget.reconciler.es.{ESIndex, ElasticSearchAdmin, MintESIndex, YnabESIndex}
 import dev.budget.reconciler.model._
+import dev.budget.reconciler.util.DateUtil
 import org.joda.time.LocalDate
 import org.joda.time.format.{DateTimeFormat, DateTimeFormatter}
 import org.slf4j.Logger
@@ -104,9 +105,38 @@ class TransactionsResource(implicit val injector: Injector) extends Injectable {
       (ynab, esDao.closestMintTransaction(ynab))
     }
 
+    val ynabDifferences: Seq[TransactionDifference] = ynabMatches.map{
+      case (ynab, Some(mint)) if exactMatch(ynab, mint) => new TransactionDifference(
+        mint.id.get, DateUtil.format(mint.date), mint.description, mint.amountCents,
+        ynab.id.get, DateUtil.format(ynab.date), ynab.payee, ynab.amountCents,
+        TransactionDifferenceType.Correct)
+      case (ynab, Some(mint)) => new TransactionDifference(
+        mint.id.get, DateUtil.format(mint.date), mint.description, mint.amountCents,
+        ynab.id.get, DateUtil.format(ynab.date), ynab.payee, ynab.amountCents,
+        TransactionDifferenceType.Incorrect)
+      case (ynab, None) => new TransactionDifference(
+        null, null, null, 0,
+        ynab.id.get, DateUtil.format(ynab.date), ynab.payee, ynab.amountCents,
+        TransactionDifferenceType.YnabOnly)
+    }
 
+    val matchedMintIds: Set[String] = ynabDifferences.flatMap{ diff =>
+      if (diff.mintId == null) None else Some(diff.mintId)
+    }.toSet
 
-    new DiffResponse(null)
+    val mintDifferences: Seq[TransactionDifference] = mintTransactions.flatMap{
+      case mint if matchedMintIds.contains(mint.id.get) => None
+      case mint => Some(new TransactionDifference(
+        mint.id.get, DateUtil.format(mint.date), mint.description, mint.amountCents,
+        null, null, null, 0,
+        TransactionDifferenceType.MintOnly))
+    }
+
+    new DiffResponse(ynabDifferences ++ mintDifferences)
+  }
+
+  private def exactMatch(ynab: YnabTransaction, mint: MintTransaction): Boolean = {
+    ynab.amountCents == mint.amountCents // TODO: include description? category? date?
   }
 
   private def indexTransactions[T <: Transaction](esIndex: ESIndex, transactions: Seq[T]): Int = {

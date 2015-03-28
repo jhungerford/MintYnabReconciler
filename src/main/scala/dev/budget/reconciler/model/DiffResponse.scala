@@ -1,3 +1,3 @@
 package dev.budget.reconciler.model
 
-case class DiffResponse(diffs: TransactionDifference)
+case class DiffResponse(diffs: Seq[TransactionDifference])
