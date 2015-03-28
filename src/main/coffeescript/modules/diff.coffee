@@ -9,6 +9,8 @@ define (require) ->
 	App.registerTemplate 'diff/loading', require('text!/templates/diff/diff-loading.hbs')
 	App.registerTemplate 'diff/error', require('text!/templates/diff/diff-error.hbs')
 
+	formatMoney = (cents) -> '$' + (cents / 100).toFixed(2)
+
 	App.DiffController = Ember.ObjectController.extend
 		earliestMonth: null
 		latestMonth: null
@@ -18,17 +20,28 @@ define (require) ->
 
 	App.DiffTransactionController = Ember.ObjectController.extend
 		isCorrect: (-> @get('differenceType') is 'Correct' ).property('differenceType')
+
 		date: (->
 			ynabDate = @get('ynabDate')
 			if ynabDate? then ynabDate else @get('mintDate')
 		).property('mintDate', 'ynabDate')
+
 		payee: (->
-			'Safeway'
+			ynabTransaction = @get('ynabTransaction')
+			if ynabTransaction? then ynabTransaction else @get('mintTransaction')
 		).property('mintTransaction', 'ynabTransaction')
+
 		amount: (->
-			'$3.50'
+			ynabCents = @get('ynabCents')
+			if ynabCents > 0 then formatMoney(ynabCents) else formatMoney(@get('mintCents'))
 		).property('mintCents', 'ynabCents')
+
 		description: (->
+			switch @get('differenceType')
+				when 'Correct' then ''
+				when 'Incorrect' then 'Amount is ' + formatMoney(@get('mintCents')) + ' in mint and ' + formatMoney(@get('ynabCents')) + ' in ynab'
+				when 'MintOnly' then 'Transaction is only in Mint'
+				when 'YnabOnly' then 'Transaction is only in Ynab'
 		).property('differenceType')
 
 	App.DiffErrorRoute = Ember.Route.extend()
