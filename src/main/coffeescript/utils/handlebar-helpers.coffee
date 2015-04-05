@@ -5,7 +5,6 @@ define ['ember'], (Ember) ->
 
 		formatCents: (cents) -> '$' + (cents / 100).toFixed(2)
 
-	Ember.Handlebars.helper 'formatDay', Helpers.formatDay
-	Ember.Handlebars.helper 'formatCents', Helpers.formatCents
+	Ember.Handlebars.helper(name, helper) for name, helper of Helpers
 
 	Helpers
