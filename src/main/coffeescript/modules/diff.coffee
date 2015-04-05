@@ -12,15 +12,7 @@ define (require) ->
 
 	formatMoney = (cents) -> '$' + (cents / 100).toFixed(2)
 
-	App.DiffController = Ember.ObjectController.extend
-		earliestMonth: null
-		latestMonth: null
-
-	App.DiffViewController = Ember.ArrayController.extend
-		needs: ['diff']
-		itemController: 'diffTransaction'
-
-	App.DiffTransactionController = Ember.ObjectController.extend
+	App.TransactionDiff = Ember.Object.extend
 		isCorrect: (-> @get('differenceType') is 'Correct' ).property('differenceType')
 
 		date: (->
@@ -45,6 +37,14 @@ define (require) ->
 				when 'MintOnly' then 'Transaction is only in Mint'
 				when 'YnabOnly' then 'Transaction is only in Ynab'
 		).property('differenceType')
+
+	App.DiffController = Ember.ObjectController.extend
+		earliestMonth: null
+		latestMonth: null
+
+	App.DiffViewController = Ember.ArrayController.extend
+		needs: ['diff']
+		sortProperties: ['date']
 
 	App.DiffErrorRoute = Ember.Route.extend()
 
@@ -81,7 +81,7 @@ define (require) ->
 				type: 'GET'
 				dataType: 'json')
 			.then (response) ->
-				($.extend(diff,
+				(App.TransactionDiff.create($.extend(diff,
 					mintDate: Dates.parseYearMonthDay(diff.mintDate)
 					ynabDate: Dates.parseYearMonthDay(diff.ynabDate)
-				) for diff in response.diffs)
+				)) for diff in response.diffs)

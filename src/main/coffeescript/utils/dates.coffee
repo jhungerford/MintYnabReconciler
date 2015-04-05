@@ -50,7 +50,7 @@ define ['ember', 'mixins/comparable', 'utils/functions'], (Ember, Comparable, F)
 					value: Date.UTC(ymd[0], ymd[1] - 1, ymd[2])
 			else null
 
-	Day = Ember.Object.extend Comparable,
+	Day = Ember.Object.extend Comparable, Ember.Comparable,
 		plus: (num, intervalName) ->
 			if intervalName is 'months'
 				date = new Date(@get('asMS'))
@@ -78,6 +78,6 @@ define ['ember', 'mixins/comparable', 'utils/functions'], (Ember, Comparable, F)
 		date: (-> @get('asDate').getUTCDate()).property('asDate')
 		humanDay: (-> Dates.days[@get('asDate').getUTCDay()]).property('asDate')
 
-		compare: (otherDay) -> F.sign(@get('asMS') - otherDay.get('asMS'))
+		compare: (thisDay, otherDay) -> F.sign(thisDay.get('asMS') - otherDay.get('asMS'))
 
 	Dates
