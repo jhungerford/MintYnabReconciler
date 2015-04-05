@@ -5,7 +5,6 @@
 </div>
 
 {{#each diff in controller.arrangedContent}}
-	{{log diff}}
 	<div {{bind-attr class=":row diff.isCorrect:diff-correct:diff-wrong"}}>
 		<div class="small-2 columns">{{formatDay diff.date}}</div>
 		<div class="small-3 columns">{{diff.payee}}</div>
