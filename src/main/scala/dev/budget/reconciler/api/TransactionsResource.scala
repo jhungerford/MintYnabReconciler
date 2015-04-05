@@ -107,16 +107,16 @@ class TransactionsResource(implicit val injector: Injector) extends Injectable {
 
     val ynabDifferences: Seq[TransactionDifference] = ynabMatches.map{
       case (ynab, Some(mint)) if exactMatch(ynab, mint) => new TransactionDifference(
-        mint.id.get, DateUtil.format(mint.date), mint.description, mint.amountCents,
-        ynab.id.get, DateUtil.format(ynab.date), ynab.payee, ynab.amountCents,
+        mint.id.get, mint.date, mint.description, mint.amountCents,
+        ynab.id.get, ynab.date, ynab.payee, ynab.amountCents,
         TransactionDifferenceType.Correct)
       case (ynab, Some(mint)) => new TransactionDifference(
-        mint.id.get, DateUtil.format(mint.date), mint.description, mint.amountCents,
-        ynab.id.get, DateUtil.format(ynab.date), ynab.payee, ynab.amountCents,
+        mint.id.get, mint.date, mint.description, mint.amountCents,
+        ynab.id.get, ynab.date, ynab.payee, ynab.amountCents,
         TransactionDifferenceType.Incorrect)
       case (ynab, None) => new TransactionDifference(
         null, null, null, 0,
-        ynab.id.get, DateUtil.format(ynab.date), ynab.payee, ynab.amountCents,
+        ynab.id.get, ynab.date, ynab.payee, ynab.amountCents,
         TransactionDifferenceType.YnabOnly)
     }
 
@@ -127,7 +127,7 @@ class TransactionsResource(implicit val injector: Injector) extends Injectable {
     val mintDifferences: Seq[TransactionDifference] = mintTransactions.flatMap{
       case mint if matchedMintIds.contains(mint.id.get) => None
       case mint => Some(new TransactionDifference(
-        mint.id.get, DateUtil.format(mint.date), mint.description, mint.amountCents,
+        mint.id.get, mint.date, mint.description, mint.amountCents,
         null, null, null, 0,
         TransactionDifferenceType.MintOnly))
     }
