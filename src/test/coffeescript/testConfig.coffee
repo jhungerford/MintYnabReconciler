@@ -1,5 +1,5 @@
 require.config
-	deps: ['/web/js/config.js', '/test-web/js/tests.js'] # testConfig will add test configuration to the base configuration
+	deps: ['/web/js/config.js', 'tests'] # testConfig will add test configuration to the base configuration
 
 	paths:
 		qUnit: '/test-web/js/libs/qunit/qunit'
