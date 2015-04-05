@@ -7,7 +7,7 @@ define ['app', 'ember', 'qUnit'], (App, Ember, QUnit) ->
 		'utils/handlebar-helpers'
 	]
 
-	integrationTests = [
+	functionalTests = [
 		'upload',
 		'diff'
 	]
@@ -38,7 +38,7 @@ define ['app', 'ember', 'qUnit'], (App, Ember, QUnit) ->
 	App.injectTestHelpers()
 
 	runTests('unit', unitTests)
-	runTests('integration', integrationTests)
+	runTests('functional', functionalTests)
 
 	QUnit.load()
 	QUnit.start()
