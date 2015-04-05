@@ -11,6 +11,12 @@
 		<div class="small-1 columns">{{diff.amount}}</div>
 		<div class="small-6 columns">{{diff.description}}</div>
 	</div>
+{{else}}
+	<div class="row">
+		<div class="small-12 columns">
+			No transactions for this month.
+		</div>
+	</div>
 {{/each}}
 
 <div class="row diff-paginator">
