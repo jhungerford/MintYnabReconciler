@@ -30,6 +30,6 @@ define ['ember', 'app', 'test/utils'], (Ember, App, TestUtils) ->
 			]})
 
 			visit('diff').then ->
-				TestUtils.diff.verifyRow find('.diff-correct:eq(0)'), '3/1/2015', 'Transaction 1', '$1.00', ''
+				TestUtils.diff.verifyRow find('.diff-correct:eq(0)'), '3/3/2015', 'Transaction 3', '$3.00', ''
 				TestUtils.diff.verifyRow find('.diff-correct:eq(1)'), '3/2/2015', 'Transaction 2', '$2.00', ''
-				TestUtils.diff.verifyRow find('.diff-correct:eq(2)'), '3/3/2015', 'Transaction 3', '$3.00', ''
+				TestUtils.diff.verifyRow find('.diff-correct:eq(2)'), '3/1/2015', 'Transaction 1', '$1.00', ''

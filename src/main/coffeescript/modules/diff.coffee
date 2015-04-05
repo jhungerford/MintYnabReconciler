@@ -45,6 +45,7 @@ define (require) ->
 	App.DiffViewController = Ember.ArrayController.extend
 		needs: ['diff']
 		sortProperties: ['date']
+		sortAscending: false
 
 	App.DiffErrorRoute = Ember.Route.extend()
 
