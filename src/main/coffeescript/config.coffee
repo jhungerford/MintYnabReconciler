@@ -1,5 +1,5 @@
 require.config
-	deps: ['app', 'routes']
+	deps: ['routes']
 
 	baseUrl: 'web/js'
 

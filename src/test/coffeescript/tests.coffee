@@ -8,12 +8,12 @@ define ['app', 'ember', 'qUnit'], (App, Ember, QUnit) ->
 	]
 
 	integrationTests = [
-		'upload'
+		'upload',
+		'diff'
 	]
 
-
 	runTests = (type, paths) ->
-		testPaths = ('test-web/js/' + type + '/' + path + '.js' for path in paths)
+		testPaths = ('test/' + type + '/' + path for path in paths)
 
 		require testPaths, (tests...) ->
 			for test, i in tests

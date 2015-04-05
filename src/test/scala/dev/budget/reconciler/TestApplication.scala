@@ -7,9 +7,10 @@ import scaldi.Injector
 
 class TestApplication(implicit inj: Injector) extends ReconcilerApplication {
   override def initialize(bootstrap: Bootstrap[Configuration]) = {
-    super.initialize(bootstrap)
-
-    bootstrap.addBundle(new AssetsBundle("/test-web", "/test-web", "", "test-web"))
+    bootstrap.addBundle(new AssetsBundle("/test-web/js", "/web/js/test", "", "test-js"))
+    bootstrap.addBundle(new AssetsBundle("/test-web/css", "/web/css/test", "", "test-css"))
     bootstrap.addBundle(new AssetsBundle("/test-html", "/test", "index.html", "test-html"))
+
+    super.initialize(bootstrap)
   }
 }
