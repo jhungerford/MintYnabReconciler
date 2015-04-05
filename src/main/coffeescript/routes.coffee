@@ -3,6 +3,7 @@ define (require) ->
 	require('modules/application')
 	require('modules/upload')
 	require('modules/diff')
+	require('utils/handlebar-helpers')
 
 	App.Router.map( ->
 		@resource 'upload'

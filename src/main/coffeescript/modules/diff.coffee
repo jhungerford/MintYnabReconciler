@@ -3,6 +3,7 @@ define (require) ->
 	App = require('app')
 	Ember = require('ember')
 	Dates = require('utils/dates')
+	require('components/date-paginator')
 
 	App.registerTemplate 'diff', require('text!/templates/diff/diff.hbs')
 	App.registerTemplate 'diff/view', require('text!/templates/diff/diff-view.hbs')

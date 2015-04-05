@@ -1,6 +1,4 @@
-define (require) ->
-	require('/web/js/config.js') # Load the application configuration - require.config will add test configuration
+require.config
+	deps: ['/web/js/config.js'] # testConfig will add test configuration to the base configuration
 
-	console.log('here!')
-
-	{}
+console.log('here')
