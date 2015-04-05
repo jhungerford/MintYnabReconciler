@@ -7,7 +7,9 @@ define ['app', 'ember', 'qUnit'], (App, Ember, QUnit) ->
 		'utils/handlebar-helpers'
 	]
 
-	integrationTests = []
+	integrationTests = [
+		'upload'
+	]
 
 
 	runTests = (type, paths) ->
