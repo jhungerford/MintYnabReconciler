@@ -44,8 +44,11 @@ define ['ember', 'mixins/comparable', 'utils/functions'], (Ember, Comparable, F)
 
 		localTimezoneMS: new Date().getTimezoneOffset() * 60*1000 # This doesn't cover DST changes
 
-		parseYearMonthDay: (ymd) -> Day.create
-			value: Date.UTC(ymd[0], ymd[1] - 1, ymd[2])
+		parseYearMonthDay: (ymd) ->
+			if ymd?
+				Day.create
+					value: Date.UTC(ymd[0], ymd[1] - 1, ymd[2])
+			else null
 
 	Day = Ember.Object.extend Comparable,
 		plus: (num, intervalName) ->

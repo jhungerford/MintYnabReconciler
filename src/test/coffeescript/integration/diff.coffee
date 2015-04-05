@@ -4,7 +4,7 @@ define ['ember', 'app', 'test/utils'], (Ember, App, TestUtils) ->
 		Ember.$.mockjaxClear()
 
 	run: ->
-		test 'one transaction', ->
+		test 'one transaction', 3, ->
 			TestUtils.stubAjax('/api/v1/transactions/diff/range', 'GET', {
 				earliestDate: [2010, 1, 10]
 				latestDate: [2015, 3, 19]
@@ -22,5 +22,7 @@ define ['ember', 'app', 'test/utils'], (Ember, App, TestUtils) ->
 				ynabTransaction: "Paycheck"
 			}]})
 
-			visit('/#/diff').then ->
-				ok false
+			visit('diff').then ->
+				equal '3/2/2015', find('.diff-correct > .columns:eq(0)').text()
+				equal 'Paycheck', find('.diff-correct > .columns:eq(1)').text()
+				equal '$123.45', find('.diff-correct > .columns:eq(2)').text()

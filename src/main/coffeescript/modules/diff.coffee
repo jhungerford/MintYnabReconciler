@@ -16,8 +16,9 @@ define (require) ->
 		earliestMonth: null
 		latestMonth: null
 
-	App.DiffViewController = Ember.ObjectController.extend
+	App.DiffViewController = Ember.ArrayController.extend
 		needs: ['diff']
+		itemController: 'diffTransaction'
 
 	App.DiffTransactionController = Ember.ObjectController.extend
 		isCorrect: (-> @get('differenceType') is 'Correct' ).property('differenceType')
@@ -79,3 +80,8 @@ define (require) ->
 			$.ajax('/api/v1/transactions/diff/' + params.year + '/' + params.month,
 				type: 'GET'
 				dataType: 'json')
+			.then (response) ->
+				($.extend(diff,
+					mintDate: Dates.parseYearMonthDay(diff.mintDate)
+					ynabDate: Dates.parseYearMonthDay(diff.ynabDate)
+				) for diff in response.diffs)
