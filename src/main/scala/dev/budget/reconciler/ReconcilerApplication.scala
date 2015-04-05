@@ -2,7 +2,7 @@ package dev.budget.reconciler
 
 import com.massrelevance.dropwizard.ScalaApplication
 import com.massrelevance.dropwizard.bundles.ScalaBundle
-import dev.budget.reconciler.api.{TransactionsResource, HelloResource}
+import dev.budget.reconciler.api.TransactionsResource
 import dev.budget.reconciler.es.ManagedElasticSearch
 import dev.budget.reconciler.health.ElasticSearchHealth
 import io.dropwizard.Configuration
@@ -23,7 +23,6 @@ class ReconcilerApplication(implicit inj: Injector) extends ScalaApplication[Con
     environment.lifecycle().manage( inject [ManagedElasticSearch] )
     environment.healthChecks().register("ElasticSearch", inject [ElasticSearchHealth])
 
-    environment.jersey.register( inject [HelloResource] )
     environment.jersey.register( inject [TransactionsResource] )
   }
 }
