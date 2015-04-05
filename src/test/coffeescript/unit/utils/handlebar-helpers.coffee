@@ -11,3 +11,8 @@ define ['utils/handlebar-helpers', 'utils/dates'], (Helpers, Dates) ->
 
 			day = Dates.today()
 			equal Helpers.formatDay(day), expected
+
+		test '$0.01 cents', -> equal Helpers.formatCents(1), '$0.01'
+		test '$0.10 cents', -> equal Helpers.formatCents(10), '$0.10'
+		test '$3.50 cents', -> equal Helpers.formatCents(350), '$3.50'
+		test '$1000.57 cents', -> equal Helpers.formatCents(100057), '$1000.57'

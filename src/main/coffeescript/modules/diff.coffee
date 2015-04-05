@@ -3,14 +3,13 @@ define (require) ->
 	App = require('app')
 	Ember = require('ember')
 	Dates = require('utils/dates')
+	Helpers = require('utils/handlebar-helpers')
 	require('components/date-paginator')
 
 	App.registerTemplate 'diff', require('text!/templates/diff/diff.hbs')
 	App.registerTemplate 'diff/view', require('text!/templates/diff/diff-view.hbs')
 	App.registerTemplate 'diff/loading', require('text!/templates/diff/diff-loading.hbs')
 	App.registerTemplate 'diff/error', require('text!/templates/diff/diff-error.hbs')
-
-	formatMoney = (cents) -> '$' + (cents / 100).toFixed(2)
 
 	App.TransactionDiff = Ember.Object.extend
 		isCorrect: (-> @get('differenceType') is 'Correct' ).property('differenceType')
@@ -25,15 +24,15 @@ define (require) ->
 			if ynabTransaction? then ynabTransaction else @get('mintTransaction')
 		).property('mintTransaction', 'ynabTransaction')
 
-		amount: (->
+		cents: (->
 			ynabCents = @get('ynabCents')
-			if ynabCents > 0 then formatMoney(ynabCents) else formatMoney(@get('mintCents'))
+			if ynabCents > 0 then ynabCents else @get('mintCents')
 		).property('mintCents', 'ynabCents')
 
 		description: (->
 			switch @get('differenceType')
 				when 'Correct' then ''
-				when 'Incorrect' then 'Amount is ' + formatMoney(@get('mintCents')) + ' in mint and ' + formatMoney(@get('ynabCents')) + ' in ynab'
+				when 'Incorrect' then 'Amount is ' + Helpers.formatCents(@get('mintCents')) + ' in mint and ' + Helpers.formatCents(@get('ynabCents')) + ' in ynab'
 				when 'MintOnly' then 'Transaction is only in Mint'
 				when 'YnabOnly' then 'Transaction is only in Ynab'
 		).property('differenceType')
