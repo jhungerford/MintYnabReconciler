@@ -1,4 +1,4 @@
-define ['app', 'qUnit'], (App, QUnit) ->
+define ['app', 'ember', 'qUnit'], (App, Ember, QUnit) ->
 
 	# ADD NEW TESTS HERE.
 	# THIS CLASS WILL AUTOMATICALLY LOAD THEM, GROUP THEM INTO MODULES, AND RUN THEM.
@@ -25,6 +25,10 @@ define ['app', 'qUnit'], (App, QUnit) ->
 					test.run()
 				else
 					throw new Error('Test ' + paths[i] + ' must be an object with a run method.')
+
+	Ember.$.mockjaxSettings.logging = true
+	Ember.$.mockjaxSettings.throwUnmocked = true
+	Ember.$.mockjaxSettings.responseTime = 0
 
 	App.rootElement = '#qunit-fixture' # Hidden property - override css to make it visible
 
