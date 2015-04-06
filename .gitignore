@@ -11,8 +11,12 @@ src/main/resources/transactions/*.csv
 
 # Bower dependencies
 # Discussion here: http://addyosmani.com/blog/checking-in-front-end-dependencies/
-# Run 'bower init' to pull them down.
-src/main/resources/web/bower_components/
+# Run 'bower install' to pull them down.
+bower_components/
+src/main/resources/web/css/foundation*
+src/main/resources/web/js/libs
+src/test/resources/test-web/js/libs
+src/test/resources/test-web/css/qunit
 
 # Grunt dependencies
 node_modules/

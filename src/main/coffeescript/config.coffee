@@ -5,10 +5,9 @@ require.config
 
 	paths:
 		ember: 'libs/ember/ember'
-		emberData: 'libs/ember/ember-data'
 		handlebars: 'libs/handlebars/handlebars'
 		jQuery: 'libs/jquery/jquery'
-		text: 'libs/require/text'
+		text: 'libs/requirejs/text'
 
 	shim:
 		jQuery:
@@ -18,11 +17,3 @@ require.config
 		ember:
 			deps: ['jQuery', 'handlebars']
 			exports: 'Ember'
-
-		emberData:
-			deps: ['ember']
-			exports: 'DS'
-
-		handlebars:
-			exports: 'Handlebars'
-

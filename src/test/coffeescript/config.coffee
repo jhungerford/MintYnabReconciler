@@ -5,7 +5,7 @@ require.config
 
 	paths:
 		qUnit: '/web/js/test/libs/qunit/qunit'
-		mockJax: '/web/js/test/libs/jquery/jquery.mockjax'
+		mockJax: '/web/js/test/libs/jquery.mockjax'
 
 	shim:
 		mockJax:
