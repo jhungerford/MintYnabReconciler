@@ -41,6 +41,8 @@ define (require) ->
 		earliestMonth: null
 		latestMonth: null
 
+
+
 	App.DiffViewController = Ember.ArrayController.extend
 		needs: ['diff']
 		sortProperties: ['date']
@@ -71,6 +73,9 @@ define (require) ->
 			error: (error) ->
 				console.log("Error loading diff view", error.message)
 				@transitionTo 'diff.error'
+
+			changeMonth: (newMonth) ->
+				@transitionTo('diff.view', newMonth.get('year'), newMonth.get('month'))
 
 		serialize: (obj) ->
 			year: obj.year
