@@ -80,7 +80,9 @@ define ['ember', 'mixins/comparable', 'utils/functions'], (Ember, Comparable, F)
 		year: (-> @get('asDate').getUTCFullYear()).property('asDate')
 		month: (-> @get('asDate').getUTCMonth() + 1).property('asDate')
 		date: (-> @get('asDate').getUTCDate()).property('asDate')
-		humanDay: (-> Dates.days[@get('asDate').getUTCDay()]).property('asDate')
+
+		humanMonth: (-> Dates.months[@get('month') - 1]).property('month')
+		humanDayOfWeek: (-> Dates.days[@get('asDate').getUTCDay()]).property('asDate')
 
 		compare: (thisDay, otherDay) -> F.sign(thisDay.get('asMS') - otherDay.get('asMS'))
 
