@@ -40,7 +40,6 @@ define (require) ->
 	App.DiffController = Ember.ObjectController.extend
 		earliestMonth: null
 		latestMonth: null
-		currentMonth: null
 
 	App.DiffViewController = Ember.ArrayController.extend
 		needs: ['diff']
@@ -60,13 +59,11 @@ define (require) ->
 			dataType: 'json')
 
 		setupController: (controller, model) ->
-			controller.set('currentMonth', Dates.asMonth(Dates.parseYearMonthDay(model.latestDate)))
 			controller.set('earliestMonth', Dates.asMonth(Dates.parseYearMonthDay(model.earliestDate)))
 			controller.set('latestMonth', Dates.asMonth(Dates.parseYearMonthDay(model.latestDate)))
 
-		redirect: (model) ->
-			console.log('redirect', model)
-			@transitionTo('diff.view', model.latestDate[0], model.latestDate[1])
+		redirect: (model, transition) ->
+			@transitionTo('diff.view', model.latestDate[0], model.latestDate[1]) if transition.targetName is "diff.index"
 
 	App.DiffViewRoute = Ember.Route.extend
 		actions:
@@ -75,7 +72,6 @@ define (require) ->
 				@transitionTo 'diff.error'
 
 			changeMonth: (newMonth) ->
-				@controllerFor('diff').set('currentMonth', newMonth)
 				@transitionTo('diff.view', newMonth.get('year'), newMonth.get('month'))
 
 		serialize: (obj) ->
@@ -83,6 +79,7 @@ define (require) ->
 			month: obj.month
 
 		model: (params) ->
+			@set('currentMonth', Dates.yearMonth(params.year, params.month))
 			$.ajax('/api/v1/transactions/diff/' + params.year + '/' + params.month,
 				type: 'GET'
 				dataType: 'json')
@@ -91,3 +88,8 @@ define (require) ->
 					mintDate: Dates.parseYearMonthDay(diff.mintDate)
 					ynabDate: Dates.parseYearMonthDay(diff.ynabDate)
 				)) for diff in response.diffs)
+
+		setupController: (controller, model) ->
+			@_super(controller, model)
+			controller.set('currentMonth', @get('currentMonth'))
+

@@ -50,6 +50,10 @@ define ['ember', 'mixins/comparable', 'utils/functions'], (Ember, Comparable, F)
 					value: Date.UTC(ymd[0], ymd[1] - 1, ymd[2])
 			else null
 
+		yearMonth: (year, month) ->
+			Day.create
+				value: Date.UTC(year, month - 1)
+
 	Day = Ember.Object.extend Comparable, Ember.Comparable,
 		plus: (num, intervalName) ->
 			if intervalName is 'months'
