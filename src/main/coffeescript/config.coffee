@@ -5,6 +5,7 @@ require.config
 
 	paths:
 		ember: 'libs/ember/ember'
+		emberTemplateCompiler: 'libs/ember/ember-template-compiler'
 		handlebars: 'libs/handlebars/handlebars'
 		jQuery: 'libs/jquery/jquery'
 		text: 'libs/requirejs/text'
@@ -15,5 +16,5 @@ require.config
 			init: -> @.jQuery.noConflict()
 
 		ember:
-			deps: ['jQuery', 'handlebars']
+			deps: ['jQuery', 'emberTemplateCompiler', 'handlebars']
 			exports: 'Ember'
