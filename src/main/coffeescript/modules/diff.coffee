@@ -40,8 +40,7 @@ define (require) ->
 	App.DiffController = Ember.ObjectController.extend
 		earliestMonth: null
 		latestMonth: null
-
-
+		currentMonth: null
 
 	App.DiffViewController = Ember.ArrayController.extend
 		needs: ['diff']
@@ -61,6 +60,7 @@ define (require) ->
 			dataType: 'json')
 
 		setupController: (controller, model) ->
+			controller.set('currentMonth', Dates.asMonth(Dates.parseYearMonthDay(model.latestDate)))
 			controller.set('earliestMonth', Dates.asMonth(Dates.parseYearMonthDay(model.earliestDate)))
 			controller.set('latestMonth', Dates.asMonth(Dates.parseYearMonthDay(model.latestDate)))
 
@@ -75,6 +75,7 @@ define (require) ->
 				@transitionTo 'diff.error'
 
 			changeMonth: (newMonth) ->
+				@controllerFor('diff').set('currentMonth', newMonth)
 				@transitionTo('diff.view', newMonth.get('year'), newMonth.get('month'))
 
 		serialize: (obj) ->
