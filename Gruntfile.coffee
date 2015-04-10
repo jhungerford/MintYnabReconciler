@@ -25,7 +25,8 @@ module.exports = (grunt) ->
 
 		bower:
 			install:
-				copy: false
+				options:
+					copy: false
 
 		copy:
 			bower:
@@ -46,4 +47,4 @@ module.exports = (grunt) ->
 	grunt.loadNpmTasks 'grunt-contrib-watch'
 
 	grunt.registerTask 'default', ['coffee']
-	grunt.registerTask 'bower', ['bower:install', 'copy:bower']
+	grunt.registerTask 'deps', ['bower:install', 'copy:bower']
