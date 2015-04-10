@@ -39,28 +39,6 @@ module.exports = (grunt) ->
 					{src: 'bower_components/foundation/css/foundation.css', dest: 'src/main/resources/web/css/foundation.css'}
 					{src: 'bower_components/foundation/css/foundation.css.map', dest: 'src/main/resources/web/css/foundation.css.map'}
 				]
-#			sources:
-#				dest: 'src/main/resources/web'
-#				js_dest: 'src/main/resources/web/js/libs'
-#				css_dest: 'src/main/resources/web/css'
-#				options:
-#					ignorePackages: ['qunit', 'modernizr', 'jquery.cookie', 'jquery-placeholder', 'fastclick']
-#					packageSpecific:
-#						'foundation':
-#							files: ['**/foundation.css', '**/foundation.css.map']
-#							stripGlobBase: false
-#					keepExpandedHierarchy: false
-#					expand: true
-#
-#			tests:
-#				dest: 'src/test/resources/test-web'
-#				js_dest: 'src/test/resources/test-web/js/libs'
-#				css_dest: 'src/test/resources/test-web/css'
-#				options:
-#					ignorePackages: [
-#						'ember', 'fastclick', 'foundation', 'handlebars', 'jquery', 'jquery.cookie',
-#						'jquery-placeholder', 'modernizr', 'requirejs', 'requirejs-text'
-#					]
 
 	grunt.loadNpmTasks 'grunt-bower-task'
 	grunt.loadNpmTasks 'grunt-contrib-copy'
