@@ -1,4 +1,4 @@
-define ['app', 'ember', 'qUnit'], (App, Ember, QUnit) ->
+define ['app', 'ember', 'qunit'], (App, Ember, QUnit) ->
 
 	# ADD NEW TESTS HERE.
 	# THIS CLASS WILL AUTOMATICALLY LOAD THEM, GROUP THEM INTO MODULES, AND RUN THEM.

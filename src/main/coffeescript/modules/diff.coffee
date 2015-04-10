@@ -1,5 +1,5 @@
 define (require) ->
-	$ = require('jQuery')
+	$ = require('jquery')
 	App = require('app')
 	Ember = require('ember')
 	Dates = require('utils/dates')

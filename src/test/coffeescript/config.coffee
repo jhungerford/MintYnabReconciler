@@ -1,17 +1,17 @@
 require.config
-	deps: ['mockJax'] # testConfig will add test configuration to the base configuration
+	deps: ['mockjax'] # testConfig will add test configuration to the base configuration
 
 	baseUrl: 'web/js'
 
 	paths:
-		qUnit: '/web/js/test/libs/qunit/qunit'
-		mockJax: '/web/js/test/libs/jquery.mockjax'
+		qunit: '/web/js/test/libs/qunit/qunit'
+		mockjax: '/web/js/test/libs/jquery.mockjax'
 
 	shim:
-		mockJax:
-			deps: ['jQuery']
+		mockjax:
+			deps: ['jquery']
 
-		qUnit:
+		qunit:
 			exports: 'QUnit'
 			init: ->
 				QUnit.config.autoload = false

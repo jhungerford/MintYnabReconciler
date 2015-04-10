@@ -1,4 +1,4 @@
-define ['ember', 'jQuery'], (Ember, $) ->
+define ['ember', 'jquery'], (Ember, $) ->
 	TestUtils =
 		stubAjax: (url, method, json) ->
 			Ember.$.mockjax
