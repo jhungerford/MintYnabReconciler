@@ -39,6 +39,8 @@ module.exports = (grunt) ->
 					{src: 'bower_components/requirejs-text/text.js', dest: 'src/main/resources/web/js/libs/requirejs/text.js'}
 					{src: 'bower_components/foundation/css/foundation.css', dest: 'src/main/resources/web/css/foundation.css'}
 					{src: 'bower_components/foundation/css/foundation.css.map', dest: 'src/main/resources/web/css/foundation.css.map'}
+					{src: 'bower_components/dropzone/dist/dropzone-amd-module.js', dest: 'src/main/resources/web/js/libs/dropzone/dropzone.js'}
+					{src: 'bower_components/dropzone/dist/dropzone.css', dest: 'src/main/resources/web/css/dropzone.css'}
 				]
 
 	grunt.loadNpmTasks 'grunt-bower-task'

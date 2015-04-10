@@ -16,7 +16,8 @@
   ],
   "devDependencies": {
     "qunit": "~1.18.0",
-    "jquery-mockajax": "~1.6.1"
+    "jquery-mockajax": "~1.6.1",
+    "dropzone": "~4.0.1"
   },
   "dependencies": {
     "jquery": "~2.1.3",
