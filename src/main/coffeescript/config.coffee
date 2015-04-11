@@ -4,7 +4,6 @@ require.config
 	baseUrl: 'web/js'
 
 	paths:
-		dropzone: 'libs/dropzone/dropzone'
 		ember: 'libs/ember/ember'
 		emberTemplateCompiler: 'libs/ember/ember-template-compiler'
 		handlebars: 'libs/handlebars/handlebars'

@@ -2,7 +2,6 @@ define (require) ->
 	App = require('app')
 	Ember = require('ember')
 	require('components/upload-csv')
-	require('dropzone')
 
 	App.registerTemplate 'upload', require('text!/templates/upload.hbs')
 
