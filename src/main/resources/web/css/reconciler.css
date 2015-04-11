@@ -33,7 +33,7 @@ body {
 	box-sizing: border-box;
 	min-height: 4em;
 	border: 2px dashed #FF9100;
-	padding: 6em 0;
+	padding: 4em 0;
 }
 
 .dropzone.dz-clickable {
