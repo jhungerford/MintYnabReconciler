@@ -12,6 +12,7 @@ define (require) ->
 				url: @get('url')
 				method: 'PUT'
 				acceptedFiles: '.csv'
+				dictDefaultMessage: @get('message')
 			))
 		).on('didInsertElement')
 

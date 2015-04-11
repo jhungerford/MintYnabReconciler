@@ -23,6 +23,27 @@ body {
 	border-left: 0.5em solid #FFCDD2;
 }
 
+.hero.inverted {
+	background-color: #263238;
+	color: rgba(255,255,255,0.87);
+	padding: 6em;
+}
+
+.dropzone {
+	box-sizing: border-box;
+	min-height: 4em;
+	border: 2px dashed #FF9100;
+	padding: 4em 0;
+}
+
+.dropzone.dz-clickable {
+	cursor: pointer;
+}
+
+.dz-message {
+	font-size: 1.4375rem;
+}
+
 .footer {
 	text-align: center;
 }

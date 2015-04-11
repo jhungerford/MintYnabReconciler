@@ -1,9 +1,7 @@
-<div class="row">
-	<div class="small-6 columns">
-		<!--upload-csv header="Mint CSV" uploaded="uploadedMint" url=mintUrl-->
-		{{file-dropzone url=mintUrl}}
+<header class="hero inverted">
+	<div class="row full">
+		<div class="small-8 columns small-offset-2 text-center">
+			{{file-dropzone url=mintUrl message="Drop Transactions Here"}}
+		</div>
 	</div>
-	<div class="small-6 columns">
-		{{upload-csv header="Ynab CSV" uploaded="uploadedYnab" url=ynabUrl}}
-	</div>
-</div>
+</header>
