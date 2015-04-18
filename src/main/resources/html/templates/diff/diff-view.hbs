@@ -6,15 +6,40 @@
 
 <div class="row">
 	<div class="small-12 columns">
+		<h3>Incorrect</h3>
+	</div>
+</div>
+{{#each diff in model.incorrect}}
+	<div class="row">
+		<div class="small-2 columns">{{formatDay diff.ynab.date}}</div>
+		<div class="small-1 columns">{{formatCents diff.ynab.cents}}</div>
+		<div class="small-9 columns">{{diff.ynab.payee}}</div>
+	</div>
+	{{#each mint in diff.closestMints}}
+		<div class="row">
+			<div class="small-2 columns">{{formatDay mint.date}}</div>
+			<div class="small-1 columns">{{formatCents mint.cents}}</div>
+			<div class="small-9 columns">{{mint.description}}</div>
+		</div>
+	{{/each}}
+{{else}}
+	<div class="row">
+		<div class="small-12 columns">
+			No transactions for this month.
+		</div>
+	</div>
+{{/each}}
+
+<div class="row">
+	<div class="small-12 columns">
 		<h3>Only in Mint</h3>
 	</div>
 </div>
-{{#each diff in mintOnly}}
-	<div {{bind-attr class=":row diff.isCorrect:diff-correct:diff-wrong"}}>
+{{#each diff in model.mintOnly}}
+	<div class="row">
 		<div class="small-2 columns">{{formatDay diff.date}}</div>
-		<div class="small-3 columns">{{diff.payee}}</div>
 		<div class="small-1 columns">{{formatCents diff.cents}}</div>
-		<div class="small-6 columns">{{diff.description}}</div>
+		<div class="small-9 columns">{{diff.description}}</div>
 	</div>
 {{else}}
 	<div class="row">
@@ -29,32 +54,11 @@
 		<h3>Only in Ynab</h3>
 	</div>
 </div>
-{{#each diff in ynabOnly}}
-	<div {{bind-attr class=":row diff.isCorrect:diff-correct:diff-wrong"}}>
-		<div class="small-2 columns">{{formatDay diff.date}}</div>
-		<div class="small-3 columns">{{diff.payee}}</div>
-		<div class="small-1 columns">{{formatCents diff.cents}}</div>
-		<div class="small-6 columns">{{diff.description}}</div>
-	</div>
-{{else}}
+{{#each diff in model.ynabOnly}}
 	<div class="row">
-		<div class="small-12 columns">
-			No transactions for this month.
-		</div>
-	</div>
-{{/each}}
-
-<div class="row">
-	<div class="small-12 columns">
-		<h3>Incorrect</h3>
-	</div>
-</div>
-{{#each diff in incorrect}}
-	<div {{bind-attr class=":row diff.isCorrect:diff-correct:diff-wrong"}}>
 		<div class="small-2 columns">{{formatDay diff.date}}</div>
-		<div class="small-3 columns">{{diff.payee}}</div>
 		<div class="small-1 columns">{{formatCents diff.cents}}</div>
-		<div class="small-6 columns">{{diff.description}}</div>
+		<div class="small-9 columns">{{diff.payee}}</div>
 	</div>
 {{else}}
 	<div class="row">
@@ -69,12 +73,11 @@
 		<h3>Correct</h3>
 	</div>
 </div>
-{{#each diff in correct}}
-	<div {{bind-attr class=":row diff.isCorrect:diff-correct:diff-wrong"}}>
-		<div class="small-2 columns">{{formatDay diff.date}}</div>
-		<div class="small-3 columns">{{diff.payee}}</div>
-		<div class="small-1 columns">{{formatCents diff.cents}}</div>
-		<div class="small-6 columns">{{diff.description}}</div>
+{{#each diff in model.correct}}
+	<div class="row">
+		<div class="small-2 columns">{{formatDay diff.ynab.date}}</div>
+		<div class="small-1 columns">{{formatCents diff.ynab.cents}}</div>
+		<div class="small-9 columns">{{diff.ynab.payee}}</div>
 	</div>
 {{else}}
 	<div class="row">

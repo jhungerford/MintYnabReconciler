@@ -3,7 +3,6 @@ define (require) ->
 	App = require('app')
 	Ember = require('ember')
 	Dates = require('utils/dates')
-	Helpers = require('utils/handlebar-helpers')
 	require('components/date-paginator')
 
 	App.registerTemplate 'diff', require('text!/templates/diff/diff.hbs')
@@ -11,52 +10,50 @@ define (require) ->
 	App.registerTemplate 'diff/loading', require('text!/templates/diff/diff-loading.hbs')
 	App.registerTemplate 'diff/error', require('text!/templates/diff/diff-error.hbs')
 
-	App.TransactionDiff = Ember.Object.extend
-		isCorrect: (-> @get('differenceType') is 'Correct' ).property('differenceType')
+	App.DiffResponseParser = Ember.Object.extend
+		parse: (response) ->
+			mintOnly: @parseMintOnly(response.mintOnly)
+			ynabOnly: @parseMintOnly(response.ynabOnly)
+			incorrect: @parseIncorrect(response.incorrect)
+			correct: @parseCorrect(response.correct)
 
-		date: (->
-			ynabDate = @get('ynabDate')
-			if ynabDate? then ynabDate else @get('mintDate')
-		).property('mintDate', 'ynabDate')
+		parseMintOnly: (mintOnly) ->
+			($.extend(true, transaction,
+				date: Dates.parseYearMonthDay(transaction.date)
+			) for transaction in mintOnly)
 
-		payee: (->
-			ynabTransaction = @get('ynabTransaction')
-			if ynabTransaction? then ynabTransaction else @get('mintTransaction')
-		).property('mintTransaction', 'ynabTransaction')
+		parseYnabOnly: (ynabOnly) ->
+			($.extend(true, transaction,
+				date: Dates.parseYearMonthDay(transaction.date)
+			) for transaction in ynabOnly)
 
-		cents: (->
-			ynabCents = @get('ynabCents')
-			if ynabCents > 0 then ynabCents else @get('mintCents')
-		).property('mintCents', 'ynabCents')
+		parseIncorrect: (incorrect) ->
+			($.extend(true, transaction,
+				ynab: { date: Dates.parseYearMonthDay(transaction.ynab.date) },
+				closestMints: (
+					{ date: Dates.parseYearMonthDay(mint.date) }
+				) for mint in transaction.closestMints
+			) for transaction in incorrect)
 
-		description: (->
-			switch @get('differenceType')
-				when 'Correct' then ''
-				when 'Incorrect' then 'Amount is ' + Helpers.formatCents(@get('mintCents')) + ' in mint and ' + Helpers.formatCents(@get('ynabCents')) + ' in ynab'
-				when 'MintOnly' then 'Transaction is only in Mint'
-				when 'YnabOnly' then 'Transaction is only in Ynab'
-		).property('differenceType')
+		parseCorrect: (correct) ->
+			($.extend(true, transaction,
+				mint: { date: Dates.parseYearMonthDay(transaction.mint.date) }
+				ynab: { date: Dates.parseYearMonthDay(transaction.ynab.date) }
+			) for transaction in correct)
 
-	App.DiffController = Ember.ObjectController.extend
+	App.DiffController = Ember.Controller.extend
 		earliestMonth: null
 		latestMonth: null
 
 	App.DiffViewController = Ember.Controller.extend
 		needs: ['diff']
 
-		getTransactionsWithType: (type) -> @get('model').filterBy('differenceType', type)
-
-		mintOnly: ( -> @getTransactionsWithType('MintOnly') ).property('model')
-		ynabOnly: ( -> @getTransactionsWithType('YnabOnly') ).property('model')
-		correct: ( -> @getTransactionsWithType('Correct') ).property('model')
-		incorrect: ( -> @getTransactionsWithType('Incorrect') ).property('model')
-
 	App.DiffErrorRoute = Ember.Route.extend()
 
 	App.DiffRoute = Ember.Route.extend
 		actions:
 			error: (error) ->
-				console.log("Error loading diff view", error.message)
+				console.log("Error loading diff view", error.message, error)
 				@transitionTo 'diff.error'
 
 		model: -> $.ajax('/api/v1/transactions/diff/range',
@@ -88,11 +85,7 @@ define (require) ->
 			$.ajax('/api/v1/transactions/diff/' + params.year + '/' + params.month,
 				type: 'GET'
 				dataType: 'json')
-			.then (response) ->
-				(App.TransactionDiff.create($.extend(diff,
-					mintDate: Dates.parseYearMonthDay(diff.mintDate)
-					ynabDate: Dates.parseYearMonthDay(diff.ynabDate)
-				)) for diff in response.diffs)
+			.then (response) -> App.DiffResponseParser.create().parse(response)
 
 		setupController: (controller, model) ->
 			@_super(controller, model)
