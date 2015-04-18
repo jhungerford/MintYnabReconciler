@@ -1,7 +1,7 @@
 package dev.budget.reconciler.dao
 
 import com.fasterxml.jackson.databind.ObjectMapper
-import dev.budget.reconciler.es.{MintESIndex, ESIndex}
+import dev.budget.reconciler.es.{ESIndex, MintESIndex}
 import dev.budget.reconciler.model.{MintTransaction, Transaction, YnabTransaction}
 import dev.budget.reconciler.util.DateUtil
 import org.elasticsearch.action.index.{IndexRequestBuilder, IndexResponse}
@@ -12,13 +12,14 @@ import org.elasticsearch.search.SearchHit
 import org.elasticsearch.search.aggregations.AggregationBuilders
 import org.elasticsearch.search.aggregations.metrics.stats.Stats
 import org.elasticsearch.search.sort.{SortBuilders, SortOrder}
-import org.joda.time.format.DateTimeFormat
 import org.joda.time.{DateTime, DateTimeZone, LocalDate}
 import org.json4s._
 import org.json4s.jackson.JsonMethods
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory.getLogger
 import scaldi.{Injectable, Injector}
+
+import scala.collection.convert.WrapAsScala
 
 class ESTransactionDao(implicit val injector: Injector) extends Injectable {
   private val log: Logger = getLogger(getClass)
@@ -75,29 +76,26 @@ class ESTransactionDao(implicit val injector: Injector) extends Injectable {
     (new LocalDate(dateStats.getMin.toLong), new LocalDate(dateStats.getMax.toLong))
   }
 
-  def closestMintTransaction(ynab: YnabTransaction): Option[MintTransaction] = {
+  def closestMintTransactions(ynab: YnabTransaction, num: Int = 5): Seq[MintTransaction] = {
     val amount = if (ynab.outflowCents > 0) ynab.outflowCents else ynab.inflowCents
 
     val request: SearchRequestBuilder = client
       .prepareSearch(MintESIndex.name)
       .setTypes(MintESIndex.esType)
-      .setSize(1) // Only interested in the closest match
+      .setSize(5)
       .setQuery(QueryBuilders.boolQuery()
-        .should(QueryBuilders.fuzzyQuery("date", ynab.date))
-        .should(QueryBuilders.fuzzyQuery("amountCents", amount))
-        .should(QueryBuilders.matchQuery("description", ynab.payee))
-        .should(QueryBuilders.matchQuery("originalDescription", ynab.payee))
+      .should(QueryBuilders.fuzzyQuery("date", ynab.date))
+      .should(QueryBuilders.fuzzyQuery("amountCents", amount))
+      .should(QueryBuilders.matchQuery("description", ynab.payee))
+      .should(QueryBuilders.matchQuery("originalDescription", ynab.payee))
       )
 
     val response: SearchResponse = request.execute.actionGet
 
     log.info(s"Closest mint transaction to $ynab: $response")
 
-    response.getHits match {
-      case hits if hits.getTotalHits == 0 => None
-      case hits if hits.getAt(0).score() < 1.5 => None
-      case hits => Some(hitToTransaction[MintTransaction](hits.getAt(0)))
-    }
+    val scalaHits: Iterable[SearchHit] = WrapAsScala.iterableAsScalaIterable(response.getHits)
+    scalaHits.map ( hitToTransaction[MintTransaction] ).toSeq
   }
 
   def hitToTransaction[T <: Transaction](hit: SearchHit)(implicit m: Manifest[T]): T = {

@@ -101,38 +101,39 @@ class TransactionsResource(implicit val injector: Injector) extends Injectable {
     val mintTransactions: Seq[MintTransaction] = esDao.allForMonth[MintTransaction](MintESIndex, year, month)
     val ynabTransactions: Seq[YnabTransaction] = esDao.allForMonth[YnabTransaction](YnabESIndex, year, month)
 
-    val ynabMatches: Seq[(YnabTransaction, Option[MintTransaction])] = ynabTransactions.map{ ynab =>
-      (ynab, esDao.closestMintTransaction(ynab))
+    val ynabMatches: Seq[(YnabTransaction, Seq[MintTransaction])] = ynabTransactions.map{ ynab =>
+      (ynab, esDao.closestMintTransactions(ynab))
     }
 
-    val ynabDifferences: Seq[TransactionDifference] = ynabMatches.map{
-      case (ynab, Some(mint)) if exactMatch(ynab, mint) => new TransactionDifference(
-        mint.id.get, mint.date, mint.description, mint.amountCents,
-        ynab.id.get, ynab.date, ynab.payee, ynab.amountCents,
-        TransactionDifferenceType.Correct)
-      case (ynab, Some(mint)) => new TransactionDifference(
-        mint.id.get, mint.date, mint.description, mint.amountCents,
-        ynab.id.get, ynab.date, ynab.payee, ynab.amountCents,
-        TransactionDifferenceType.Incorrect)
-      case (ynab, None) => new TransactionDifference(
-        null, null, null, 0,
-        ynab.id.get, ynab.date, ynab.payee, ynab.amountCents,
-        TransactionDifferenceType.YnabOnly)
+    val diffWithoutMintOnly = ynabMatches.foldLeft(DiffResponse()) { (diff, ynabMatch) =>
+      ynabMatch match {
+        // Ynab Only
+        case (ynab, mints) if mints.isEmpty =>
+          diff.copy(ynabOnly = diff.ynabOnly :+ YnabAsDiff(ynab))
+
+         // Correct
+        case (ynab, mint :: _) if exactMatch(ynab, mint) =>
+          val ynabDiff = YnabAsDiff(ynab)
+          val mintDiff = MintAsDiff(mint)
+          diff.copy(correct = diff.correct :+ CorrectDiffResponse(ynabDiff, mintDiff))
+
+        // Incorrect
+        case (ynab, mints) =>
+          val ynabDiff = YnabAsDiff(ynab)
+          val mintsDiff: Array[MintDiffResponse] = mints.map( MintAsDiff(_) ).toArray
+          diff.copy(incorrect = diff.incorrect :+ IncorrectDiffResponse(ynabDiff, mintsDiff))
+      }
     }
 
-    val matchedMintIds: Set[String] = ynabDifferences.flatMap{ diff =>
-      if (diff.mintId == null) None else Some(diff.mintId)
-    }.toSet
+    val correctMintIds: Set[String] = diffWithoutMintOnly.correct.flatMap( _.mint.id ).toSet
+    // TODO: how to handle incorrect ids?  Currently, mint transactions show up in mint only and incorrect.
 
-    val mintDifferences: Seq[TransactionDifference] = mintTransactions.flatMap{
-      case mint if matchedMintIds.contains(mint.id.get) => None
-      case mint => Some(new TransactionDifference(
-        mint.id.get, mint.date, mint.description, mint.amountCents,
-        null, null, null, 0,
-        TransactionDifferenceType.MintOnly))
-    }
+    val mintOnly = mintTransactions.flatMap{
+      case mint if correctMintIds.contains(mint.id.get) => None
+      case mint => Some(MintAsDiff(mint))
+    }.toArray
 
-    new DiffResponse(ynabDifferences ++ mintDifferences)
+    diffWithoutMintOnly.copy(mintOnly = mintOnly)
   }
 
   private def exactMatch(ynab: YnabTransaction, mint: MintTransaction): Boolean = {
