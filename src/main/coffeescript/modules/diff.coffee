@@ -41,10 +41,15 @@ define (require) ->
 		earliestMonth: null
 		latestMonth: null
 
-	App.DiffViewController = Ember.ArrayController.extend
+	App.DiffViewController = Ember.Controller.extend
 		needs: ['diff']
-		sortProperties: ['date']
-		sortAscending: false
+
+		getTransactionsWithType: (type) -> @get('model').filterBy('differenceType', type)
+
+		mintOnly: ( -> @getTransactionsWithType('MintOnly') ).property('model')
+		ynabOnly: ( -> @getTransactionsWithType('YnabOnly') ).property('model')
+		correct: ( -> @getTransactionsWithType('Correct') ).property('model')
+		incorrect: ( -> @getTransactionsWithType('Incorrect') ).property('model')
 
 	App.DiffErrorRoute = Ember.Route.extend()
 
