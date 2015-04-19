@@ -1,7 +1,7 @@
 scalaVersion := "2.10.4"
 
 val dropwizardVersion = "0.7.1"
-val elasticsearchVersion = "1.4.4"
+val elasticsearchVersion = "1.5.1"
 val finagleVersion = "6.24.0"
 
 libraryDependencies += "io.dropwizard" % "dropwizard-core" % dropwizardVersion
