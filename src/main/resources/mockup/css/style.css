@@ -1,0 +1,138 @@
+body {
+	/*background: #ECEFF1;*/
+	background: #CFD8DC;
+	color: rgba(0, 0, 0, 0.87);
+	margin: 0;
+}
+
+.container {
+	width: 1080px;
+	margin-left: auto;
+	margin-right: auto;
+}
+
+/* ----- Navbar ----- */
+
+nav {
+	background: #263238;
+	color: #FFFFFF;
+	box-shadow: 0 0 0.5rem 0 #263238;
+}
+
+nav h1 {
+	font-size: 2.5rem;
+	line-height: 4rem;
+	font-weight: bold;
+	margin-bottom: 0;
+}
+
+nav ul {
+	list-style: none;
+	margin-bottom: 0;
+}
+
+nav li {
+	display: list-item;
+	float: left;
+	margin: 0;
+	padding: 0 1.5rem;
+	line-height: 4rem;
+	font-weight: bold;
+	color: rgba(255, 255, 255, 0.87);
+	text-decoration: none;
+}
+
+nav li.active {
+	box-shadow: inset 0 -0.5rem #546E7A;
+}
+
+nav li:hover {
+	cursor: pointer;
+	background: #455A64;
+	color: rgba(255, 255, 255, 0.87);
+}
+
+/* ----- Month Selector ----- */
+
+.month-selector {
+	text-align: center;
+	border: 1px solid #B0BEC5;
+	border-radius: 0.5rem;
+	background: #ECEFF1;
+	margin: 1.5rem 0;
+}
+
+.month-selector .year {
+	width: 8%;
+}
+
+.month-selector .month {
+	width: 7%;
+}
+
+.month-selector ul {
+	list-style: none;
+	margin-bottom: 0;
+}
+
+.month-selector li {
+	display: list-item;
+	float: left;
+	padding: 0.5rem 0;
+	margin: 0;
+	color: rgba(0, 0, 0, 0.87);
+	text-decoration: none;
+}
+
+.month-selector li:hover {
+	cursor: pointer;
+	background: #455A64;
+	color: rgba(255, 255, 255, 0.87);
+}
+
+.month-selector li.unavailable {
+	color: rgba(0, 0, 0, 0.5);
+}
+
+.month-selector li.unavailable:hover {
+	cursor: default;
+	background: #ECEFF1;
+	color: rgba(0, 0, 0, 0.5);
+}
+
+.month-selector li.active {
+	box-shadow: inset 0 -0.5rem #546E7A;
+}
+
+/* ----- Diff ----- */
+
+h2 {
+	margin: 0;
+}
+
+.transaction {
+	border: 1px solid #B0BEC5;
+	border-radius: 0.5rem;
+	background: #ECEFF1;
+	margin-bottom: 1em;
+}
+
+.transaction .row {
+	padding: 0 0.25rem;
+}
+
+.transaction .ynab {
+	background: rgba(207, 216, 220, 0.5);
+	border-bottom: 1px solid #B0BEC5;
+	font-weight: bold;
+}
+
+/* ----- Utilities ----- */
+
+.text-center {
+	text-align: center;
+}
+
+.bullet:before {
+	content: '\0b7';
+}

@@ -2,7 +2,6 @@
 *.iml
 build/
 target/
-mockup/
 data/
 sbt-launch.jar
 

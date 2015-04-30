@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+
+	<link rel="stylesheet" type="text/css" href="css/font-awesome.css">
+	<link rel="stylesheet" type="text/css" href="css/skeleton.css" />
+	<link rel="stylesheet" type="text/css" href="css/style.css" />
+</head>
+<body>
+	<nav class="navbar u-full-width">
+		<div class="container">
+			<div class="u-pull-left">
+				<h1>Mint & Ynab Reconciler</h1>
+			</div>
+			<ul class="u-pull-right">
+				<li>Start Over</li>
+				<li>Recent</li>
+				<li class="active">Current</li>
+			</ul>
+		</div>
+	</nav>
+
+	<div class="container">
+		<section class="month-selector">
+			<div class="row">
+				<div class="twelve columns">
+					<ul>
+						<li class="year">&laquo; 2014</li>
+						<li class="month">Jan</li>
+						<li class="month">Feb</li>
+						<li class="month">Mar</li>
+						<li class="month active">Apr</li>
+						<li class="month unavailable">May</li>
+						<li class="month unavailable">Jun</li>
+						<li class="month unavailable">Jul</li>
+						<li class="month unavailable">Aug</li>
+						<li class="month unavailable">Sep</li>
+						<li class="month unavailable">Oct</li>
+						<li class="month unavailable">Nov</li>
+						<li class="month unavailable">Dec</li>
+						<li class="year unavailable">2016 &raquo;</li>
+					</ul>
+				</div>
+			</div>
+		</section>
+
+		<h1 class="text-center">April 2015</h1>
+
+		<section class="incorrect">
+			<h2>Incorrect</h2>
+
+			<div class="transaction">
+				<div class="row ynab">
+					<div class="two columns">3/5/2015</div>
+					<div class="eight columns">Insurance</div>
+					<div class="two columns">$35.00</div>
+				</div>
+				<div class="row mint">
+					<div class="two columns">12/9/2014</div>
+					<div class="eight columns">Auto Insurance</div>
+					<div class="two columns">$21.49</div>
+				</div>
+				<div class="row mint">
+					<div class="two columns">3/2/2014</div>
+					<div class="eight columns">Auto Insurance Payment</div>
+					<div class="two columns">$350.00</div>
+				</div>
+			</div>
+
+			<div class="transaction">
+				<div class="row ynab">
+					<div class="two columns">3/5/2015</div>
+					<div class="eight columns">Insurance</div>
+					<div class="two columns">$35.00</div>
+				</div>
+				<div class="row mint">
+					<div class="two columns">12/9/2014</div>
+					<div class="eight columns">Auto Insurance</div>
+					<div class="two columns">$21.49</div>
+				</div>
+				<div class="row mint">
+					<div class="two columns">3/2/2014</div>
+					<div class="eight columns">Auto Insurance Payment</div>
+					<div class="two columns">$350.00</div>
+				</div>
+			</div>
+		</section>
+
+		<section class="mint-only">
+			<h2>Mint Only</h2>
+
+			<div class="transaction">
+				<div class="row">
+					<div class="two columns">3/5/2015</div>
+					<div class="eight columns">Insurance</div>
+					<div class="two columns">$35.00</div>
+				</div>
+				<div class="row">
+					<div class="two columns">12/9/2014</div>
+					<div class="eight columns">Auto Insurance</div>
+					<div class="two columns">$21.49</div>
+				</div>
+			</div>
+		</section>
+
+		<section class="ynab-only">
+			<h2>Ynab Only</h2>
+
+			<div class="transaction">
+				<div class="row">
+					<div class="two columns">3/5/2015</div>
+					<div class="eight columns">Insurance</div>
+					<div class="two columns">$35.00</div>
+				</div>
+				<div class="row">
+					<div class="two columns">12/9/2014</div>
+					<div class="eight columns">Auto Insurance</div>
+					<div class="two columns">$21.49</div>
+				</div>
+			</div>
+		</section>
+
+		<section class="correct">
+			<h2>Correct</h2>
+
+			<div class="transaction">
+				<div class="row">
+					<div class="two columns">3/5/2015</div>
+					<div class="eight columns">Insurance</div>
+					<div class="two columns">$35.00</div>
+				</div>
+				<div class="row">
+					<div class="two columns">12/9/2014</div>
+					<div class="eight columns">Auto Insurance</div>
+					<div class="two columns">$21.49</div>
+				</div>
+			</div>
+		</section>
+	</div>
+</body>
+</html>
