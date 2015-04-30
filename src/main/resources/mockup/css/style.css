@@ -17,6 +17,7 @@ nav {
 	background: #263238;
 	color: #FFFFFF;
 	box-shadow: 0 0 0.5rem 0 #263238;
+	margin-bottom: 1.5rem;
 }
 
 nav h1 {
@@ -59,7 +60,7 @@ nav li:hover {
 	border: 1px solid #B0BEC5;
 	border-radius: 0.5rem;
 	background: #ECEFF1;
-	margin: 1.5rem 0;
+	margin-bottom: 1.5rem;
 }
 
 .month-selector .year {
@@ -106,7 +107,7 @@ nav li:hover {
 
 /* ----- Diff ----- */
 
-h2 {
+h1, h2, h3 {
 	margin: 0;
 }
 
@@ -125,6 +126,26 @@ h2 {
 	background: rgba(207, 216, 220, 0.5);
 	border-bottom: 1px solid #B0BEC5;
 	font-weight: bold;
+}
+
+/* ----- Upload ----- */
+.upload {
+	border: 1px solid #B0BEC5;
+	border-radius: 0.5rem;
+	background: #ECEFF1;
+	text-align: center;
+	margin-top: 0.5rem;
+}
+
+.upload .mint {
+	border-right: 1px solid #B0BEC5;
+	margin: 0;
+	padding: 4rem 0;
+}
+
+.upload .ynab {
+	margin: 0;
+	padding: 4rem 0;
 }
 
 /* ----- Utilities ----- */
